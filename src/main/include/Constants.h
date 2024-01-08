@@ -35,6 +35,9 @@ constexpr double kMagnitudeSlewRate = 1.8;   // percent per second (1 = 100%)
 constexpr double kRotationalSlewRate = 2.0;  // percent per second (1 = 100%)
 
 // Chassis configuration
+/*
+Todo: add TrackWidth and WheelBase measurements
+*/
 constexpr units::meter_t kTrackWidth =
     0.6731_m;  // Distance between centers of right and left wheels on robot
 constexpr units::meter_t kWheelBase =
@@ -46,6 +49,10 @@ constexpr double kFrontRightChassisAngularOffset = 0;
 constexpr double kRearLeftChassisAngularOffset = std::numbers::pi;
 constexpr double kRearRightChassisAngularOffset = std::numbers::pi / 2;
 
+
+/*
+Todo: Configure Can Ids and update accordingly
+*/
 // Pigeon IMU
 constexpr int kPigeonIMU = 9;
 
@@ -63,6 +70,10 @@ constexpr int kRearRightTurningCanId = 16;
 
 }  // namespace DriveConstants
 
+
+/*
+Todo: Update the module data based on actual build
+*/
 namespace ModuleConstants {
 // Invert the turning encoder, since the output shaft rotates in the opposite
 // direction of the steering motor in the MAXSwerve Module.
@@ -126,6 +137,9 @@ constexpr units::ampere_t kDrivingMotorCurrentLimit = 50_A;
 constexpr units::ampere_t kTurningMotorCurrentLimit = 20_A;
 }  // namespace ModuleConstants
 
+/*
+Todo: ensure these values makes sense for our auto 
+*/
 namespace AutoConstants {
 constexpr auto kMaxSpeed = 3_mps;
 constexpr auto kMaxAcceleration = 3_mps_sq;
