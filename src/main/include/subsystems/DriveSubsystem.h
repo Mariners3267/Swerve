@@ -115,6 +115,10 @@ class DriveSubsystem : public frc2::SubsystemBase {
   //frc::ADIS16470_IMU m_gyro;
     ctre::phoenix6::hardware::Pigeon2 m_gyro{DriveConstants::kPigeonIMU};
 
+    /*
+    TODO: I added the beta release of the ctre vendor dependency - will have to update once they release the actual 2024 version
+    */
+
   // Slew rate filter variables for controlling lateral acceleration
   double m_currentRotation = 0.0;
   double m_currentTranslationDir = 0.0;
