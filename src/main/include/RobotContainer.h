@@ -13,9 +13,12 @@
 #include <frc2/command/PIDCommand.h>
 #include <frc2/command/ParallelRaceGroup.h>
 #include <frc2/command/RunCommand.h>
-
+#include <frc2/command/CommandPtr.h>
+#include <rev/CANSparkMax.h>
+#include <rev/CANSparkMaxLowLevel.h>
 #include "Constants.h"
 #include "subsystems/DriveSubsystem.h"
+#include "subsystems/Intake.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -38,7 +41,8 @@ class RobotContainer {
 
   // The robot's subsystems
   DriveSubsystem m_drive;
-
+  Intake m_intake;
+  
   // The chooser for the autonomous routines
   frc::SendableChooser<frc2::Command*> m_chooser;
 
