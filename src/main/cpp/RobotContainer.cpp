@@ -7,6 +7,7 @@
 #include <frc/controller/PIDController.h>
 #include <frc/geometry/Translation2d.h>
 #include <frc/shuffleboard/Shuffleboard.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/trajectory/Trajectory.h>
 #include <frc/trajectory/TrajectoryGenerator.h>
 #include <frc2/command/InstantCommand.h>
@@ -20,6 +21,7 @@
 
 #include "Constants.h"
 #include "subsystems/DriveSubsystem.h"
+#include "subsystems/Arm.h"
 
 using namespace DriveConstants;
 
@@ -53,16 +55,31 @@ void RobotContainer::ConfigureButtonBindings() {
 
 
     frc2::JoystickButton(&m_driverController,
-                       frc::XboxController::Button::kA)
+                       frc::XboxController::Button::kX)
       .WhileTrue(new frc2::RunCommand([this] { m_intake.RunIntake(); }, {&m_intake}));     
 
     frc2::JoystickButton(&m_driverController,
-                       frc::XboxController::Button::kB)
+                       frc::XboxController::Button::kY)
       .WhileTrue(new frc2::RunCommand([this] { m_intake.ReverseIntake(); }, {&m_intake}));  
 
     frc2::JoystickButton(&m_driverController,
-                       frc::XboxController::Button::kX)
+                       frc::XboxController::Button::kLeftBumper)
       .WhileTrue(new frc2::RunCommand([this] { m_intake.Stop(); }, {&m_intake}));      
+
+    frc2::JoystickButton(&m_driverController,
+                    frc::XboxController::Button::kA)
+    .OnTrue(new frc2::RunCommand([this] { 
+        m_arm.RunArm(); 
+    }, {&m_arm}))
+    .OnFalse(new frc2::RunCommand([this] { 
+        m_arm.Stop(); 
+    }, {&m_arm}));
+
+    frc2::JoystickButton(&m_driverController,
+                    frc::XboxController::Button::kB)
+    .WhileTrue(new frc2::RunCommand([this] { 
+          m_arm.Stop();
+        }, {&m_arm})); 
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

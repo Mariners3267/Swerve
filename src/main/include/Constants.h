@@ -27,7 +27,8 @@
 namespace DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    constexpr units::meters_per_second_t kMaxSpeed = 4.8_mps;
+    constexpr units::meters_per_second_t kMaxSpeed = 1.0_mps;
+    //constexpr units::meters_per_second_t kMaxSpeed = 4.8_mps;
     constexpr units::radians_per_second_t kMaxAngularSpeed{2 * std::numbers::pi};
 
     constexpr double kDirectionSlewRate = 1.2;   // radians per second
@@ -56,7 +57,7 @@ namespace DriveConstants {
 
     // SPARK MAX CAN IDs
     constexpr int kFrontLeftDrivingCanId = 11;
-    constexpr int kRearLeftDrivingCanId = 13;
+    constexpr int kRearLeftDrivingCanId = 13; //13;
     constexpr int kFrontRightDrivingCanId = 15;
     constexpr int kRearRightDrivingCanId = 17;
 
@@ -84,7 +85,7 @@ namespace ModuleConstants {
 
     // Calculations required for driving motor conversion factors and feed forward
     constexpr double kDrivingMotorFreeSpeedRps = 5676.0 / 60;  // NEO free speed is 5676 RPM
-    constexpr units::meter_t kWheelDiameter = 0.0762_m;
+    constexpr units::meter_t kWheelDiameter = 0.0762_m; //3"wheels
     constexpr units::meter_t kWheelCircumference = kWheelDiameter * std::numbers::pi;
     // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
     // teeth on the bevel pinion
@@ -146,4 +147,16 @@ namespace OIConstants {
 namespace IntakeConstants {
     constexpr int kConveyorCanId = 7;
     constexpr double kIntakeSpeed = 0.3;
+}
+
+namespace ArmConstants {
+ constexpr int kArmCanid = 1;
+ constexpr int kArmCanid2 = 2; 
+ constexpr double kArmSpeed = 0.1; 
+ constexpr int kArmDio = 0;
+}
+namespace PivotConstants {
+ constexpr int kPivotCanid = 10; 
+ constexpr double kPivotSpeed = 0.3; 
+
 }
