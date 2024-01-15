@@ -21,38 +21,48 @@ Arm::Arm() {
   
 }
 
-frc2::CommandPtr Arm::RunArm() {
+bool Arm::RunArm() {
   // Inline construction of command goes here.
   // Subsystem::RunOnce implicitly requires `this` subsystem.
-  return RunOnce([ this ] { 
-    m_arm.Set(kArmSpeed);
-    frc::SmartDashboard::PutString("Arm_Angle","Up"); 
-    });
+    if (is_arm_up()){
+      m_arm.Set(kArmSpeed);
+      m_arm2.Set(kArmSpeed);
+      frc::SmartDashboard::PutString("Arm_Angle","Up"); 
+      return true;
+    }
+    else {
+      frc::SmartDashboard::PutString("Arm_Angle","Already Loaded");
+      m_arm.Set(0);
+      return false;
+    }
+    
   //RunOnce creates a command that calls a lambda once, and then finishes.
 }
 
-frc2::CommandPtr Arm::ReverseArm() {
+void Arm::ReverseArm() {
   // Inline construction of command goes here.
   // Subsystem::RunOnce implicitly requires `this` subsystem.
-  return RunOnce([ this ] { 
+  
     m_arm.Set(-kArmSpeed);
+    m_arm2.Set(-kArmSpeed);
     frc::SmartDashboard::PutString("Arm_Angle","Down"); 
-    });
+    
 }
 
-frc2::CommandPtr Arm::Stop(){
-return RunOnce([ this ] { 
+void Arm::Stop(){
+  frc::SmartDashboard::PutString("Arm_Angle","notGoing"); 
   m_arm.Set(0);
-    });
+  m_arm2.Set(0);
 }
 
-bool is_arm_up() {
+bool Arm::is_arm_up() {
   // Query some boolean state, such as a digital sensor.
-  return false;
+  return m_clicker.Get();
 }
 
 void Arm::Periodic() {
   // Implementation of subsystem periodic method goes here.
+  frc::SmartDashboard::PutString("Arm_Subsystem","Periodic"); 
 }
 
 void Arm::SimulationPeriodic() {

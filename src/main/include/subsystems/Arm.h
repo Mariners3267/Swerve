@@ -8,6 +8,7 @@
 #include <frc2/command/SubsystemBase.h>
 #include <rev/CANSparkMax.h>
 #include "Constants.h"
+#include <frc/DigitalInput.h>
 
 class Arm : public frc2::SubsystemBase {
  public:
@@ -16,9 +17,10 @@ class Arm : public frc2::SubsystemBase {
   /**
    * Example command factory method.
    */
-  frc2::CommandPtr RunArm();
-  frc2::CommandPtr ReverseArm();
-  frc2::CommandPtr Stop();
+
+  bool RunArm();
+  void ReverseArm();
+  void Stop();
   
   /**
    * An example method querying a boolean state of the subsystem (for example, a
@@ -43,5 +45,7 @@ class Arm : public frc2::SubsystemBase {
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
   rev::CANSparkMax m_arm{ArmConstants::kArmCanid, rev::CANSparkLowLevel::MotorType::kBrushless};
+  rev::CANSparkMax m_arm2{ArmConstants::kArmCanid2, rev::CANSparkLowLevel::MotorType::kBrushless};
+  frc::DigitalInput m_clicker{ArmConstants::kArmDio};
   //rev::CANSparkMax m_conveyorMotor(int deviceID, rev::CANSparkLowLevel::MotorType type);
 };

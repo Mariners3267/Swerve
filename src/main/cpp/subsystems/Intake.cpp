@@ -47,7 +47,9 @@ return RunOnce([ this ] {
 }
 
 bool isLoaded() {
-  // Query some boolean state, such as a digital sensor.
+  // Query some boolean state, such as a digital limit switch
+  //The shooter will also be able to query this state of this limit switch 
+  //If we are loaded, stop trying to load.
   return false;
 }
 
