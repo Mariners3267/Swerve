@@ -22,6 +22,7 @@
 #include "Constants.h"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Arm.h"
+#include <photon/PhotonUtils.h>
 
 using namespace DriveConstants;
 
@@ -66,6 +67,7 @@ void RobotContainer::ConfigureButtonBindings() {
                        frc::XboxController::Button::kLeftBumper)
       .WhileTrue(new frc2::RunCommand([this] { m_intake.Stop(); }, {&m_intake}));      
 
+
     frc2::JoystickButton(&m_driverController,
                     frc::XboxController::Button::kA)
     .OnTrue(new frc2::RunCommand([this] { 
@@ -80,6 +82,71 @@ void RobotContainer::ConfigureButtonBindings() {
     .WhileTrue(new frc2::RunCommand([this] { 
           m_arm.Stop();
         }, {&m_arm})); 
+
+
+//Second Controller
+    frc2::JoystickButton(&m_coDriverController,
+                       frc::XboxController::Button::kLeftBumper)
+      .WhileTrue(new frc2::RunCommand([this] { 
+        //get the camera target info and pass as params to 
+        
+        photon::PhotonPipelineResult result = camera.GetLatestResult();
+        if (result.HasTargets()) {
+            double Yehaw = result.GetBestTarget().GetYaw();
+            int targetID = result.GetBestTarget().GetFiducialId();
+
+            //TODO:
+            //Different targets are at different heights
+            //need to create a hash or map to pass in the target height for this targetID
+
+        
+/*
+SOURCE AprilTags (IDs 1, 2, 9, and 10) are mounted to the SOURCE wall. The bottom of each tag’s panel is 4 ft.
+⅛ in. (~122 cm) above the carpet and 1 ft. 7⅜ in. (~50 cm) from the vertical center of the SOURCE.
+
+SPEAKER AprilTags (IDs 3, 4, 7, and 8) are mounted to the ALLIANCE WALL. The bottom of each tag’s panel is
+4 ft. 3⅞ in. (~132 cm) above the carpet. 1 tag (IDs 4 and 7) is vertically centered above each SUBWOOFER. The
+2nd tag (IDs 3 and 8) is shifted toward DRIVER STATION 2 and the edge of its panel is 1 ft. 5 in. (~43 cm) from
+the vertical center of the SPEAKER ALLIANCE WALL plastic. 
+
+AMP AprilTag panels (IDs 5 and 6) are 4 ft. ⅛ in. (~122 cm) above the carpet and centered vertically above the
+AMP wall. 
+
+STAGE AprilTag plates (IDs 11-16) are 3 ft. 11½ in. (~121 cm) above the carpet and centered vertically on each
+of the 3 wide faces of the STAGE core. These tags are behind ¼-in. (~6 mm) thick polycarbonate. 
+*/
+            if (targetID == 1) {
+
+                units::meter_t range = photon::PhotonUtils::CalculateDistanceToTarget(
+                CAMERA_HEIGHT, TARGET_HEIGHT, CAMERA_PITCH,
+                units::degree_t{result.GetBestTarget().GetPitch()});
+                m_drive.PhotonDrive(targetID, Yehaw, range); 
+            }
+            
+            else {
+            //If we don't care about this target - leave it in controll of the driver
+            m_drive.Drive(
+            -units::meters_per_second_t{frc::ApplyDeadband(
+                m_driverController.GetLeftY(), OIConstants::kDriveDeadband)},
+            -units::meters_per_second_t{frc::ApplyDeadband(
+                m_driverController.GetLeftX(), OIConstants::kDriveDeadband)},
+            -units::radians_per_second_t{frc::ApplyDeadband(
+                m_driverController.GetRightX(), OIConstants::kDriveDeadband)},
+            true, true);
+            }
+        }
+        else {
+            //If we don't have any vision targets - leave it in controll of the driver
+            m_drive.Drive(
+            -units::meters_per_second_t{frc::ApplyDeadband(
+                m_driverController.GetLeftY(), OIConstants::kDriveDeadband)},
+            -units::meters_per_second_t{frc::ApplyDeadband(
+                m_driverController.GetLeftX(), OIConstants::kDriveDeadband)},
+            -units::radians_per_second_t{frc::ApplyDeadband(
+                m_driverController.GetRightX(), OIConstants::kDriveDeadband)},
+            true, true);
+        }
+      }, {&m_drive}));
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

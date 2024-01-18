@@ -49,6 +49,8 @@ class DriveSubsystem : public frc2::SubsystemBase {
    */
   void SetX();
 
+  void PhotonDrive(int targetId, double Yehaw, units::length::meter_t range);
+
   /**
    * Resets the drive encoders to currently read a position of 0.
    */

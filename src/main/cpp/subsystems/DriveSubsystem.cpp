@@ -11,6 +11,7 @@
 
 #include "Constants.h"
 #include "utils/SwerveUtils.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 using namespace DriveConstants;
 
@@ -132,6 +133,25 @@ void DriveSubsystem::SetX() {
       frc::SwerveModuleState{0_mps, frc::Rotation2d{-45_deg}});
   m_rearRight.SetDesiredState(
       frc::SwerveModuleState{0_mps, frc::Rotation2d{45_deg}});
+}
+
+void DriveSubsystem::PhotonDrive(int targetId, double YeHaw, units::length::meter_t range) {
+frc::SmartDashboard::PutNumber("Target Acquired", targetId);
+frc::SmartDashboard::PutNumber("Target YeHaw", YeHaw);
+
+units::length::inch_t rangeInInches = range;
+frc::SmartDashboard::PutNumber("Target Range in Inches", rangeInInches.value());
+frc::SmartDashboard::PutNumber("Target Range in Meters", range.value());
+
+/*
+The .value() converts units from meter_t to it's underlying value of a double
+https://docs.wpilib.org/en/stable/docs/software/basic-programming/cpp-units.html
+
+*/
+
+  //do like autonomous 
+  //set current position to 0
+  //then drive to where we should go
 }
 
 void DriveSubsystem::SetModuleStates(
