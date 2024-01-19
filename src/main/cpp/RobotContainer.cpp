@@ -30,7 +30,7 @@ using namespace DriveConstants;
 
 RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
-  aprilTag.addAprilTagData(1, 122_cm, "source", "blue"); //on the right side of soure
+  aprilTag.addAprilTagData(1, 122_cm, "source", "blue"); //on the right side of source
   aprilTag.addAprilTagData(2, 122_cm, "source", "blue"); //on the left side of source
   aprilTag.addAprilTagData(3, 132_cm, "speaker", "red"); //shifted 43_cm toward drivers station on speaker
   aprilTag.addAprilTagData(4, 132_cm, "speaker", "red"); //vertically centered on speaker
@@ -109,23 +109,31 @@ void RobotContainer::ConfigureButtonBindings() {
                        frc::XboxController::Button::kLeftBumper)
       .WhileTrue(new frc2::RunCommand([this] { 
         //get the camera target info 
-        
+
         photon::PhotonPipelineResult result = camera.GetLatestResult();
+        result.HasTargets() ? frc::SmartDashboard::PutString("has le target", "true"): frc::SmartDashboard::PutString("has le target", "false");
+
         if (result.HasTargets()) {
-            double Yehaw = result.GetBestTarget().GetYaw();
+            double Yehaw = result.GetBestTarget().GetPitch();
             int targetID = result.GetBestTarget().GetFiducialId();
+            frc::SmartDashboard::PutNumber("Yehaw", Yehaw);
+            frc::SmartDashboard::PutNumber("targetID", targetID);
+            
 
             units::length::meter_t targetDataHeight = aprilTag.returnAprilTagDataHeight(targetID);
             const std::string targetDataType = aprilTag.returnAprilTagDataTargetType(targetID);
             const std::string redOrBlue = aprilTag.returnAprilTagDataTargetAlliance(targetID);
             
+
             //const std::string alliance = frc::DriverStation::GetAlliance();
             if (auto ally = frc::DriverStation::GetAlliance()) {
                 if (ally.value() == frc::DriverStation::Alliance::kRed) {
                     //we red
+                    frc::SmartDashboard::PutString("Our Alliance", "RED");
                 }
                 if (ally.value() == frc::DriverStation::Alliance::kBlue) {
                    //we blue
+                   frc::SmartDashboard::PutString("Our Alliance", "BLUE");
                 }
             }
 
@@ -134,7 +142,7 @@ void RobotContainer::ConfigureButtonBindings() {
             //If we are loaded we only care about speaker targets
             //If we are NOT loaded we only care about source targets
 
-            if (targetID == 1) {
+            if (targetID == 23) {
 
                 units::meter_t range = photon::PhotonUtils::CalculateDistanceToTarget(
                 CAMERA_HEIGHT, targetDataHeight, CAMERA_PITCH,
@@ -181,9 +189,9 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
       // Start at the origin facing the +X direction
       frc::Pose2d{0_m, 0_m, 0_deg},
       // Pass through these two interior waypoints, making an 's' curve path
-      {frc::Translation2d{1_m, 1_m}, frc::Translation2d{2_m, -1_m}},
+      {frc::Translation2d{2_m, 0_m}, frc::Translation2d{2_m, 1_m}}, // positive 2nd number = left, negative = right
       // End 3 meters straight ahead of where we started, facing forward
-      frc::Pose2d{3_m, 0_m, 0_deg},
+      frc::Pose2d{0_m, 0_m, 180_deg},
       // Pass the config
       config);
 

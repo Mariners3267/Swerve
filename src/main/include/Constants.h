@@ -26,7 +26,7 @@
 namespace DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    constexpr units::meters_per_second_t kMaxSpeed = 1.0_mps;
+    constexpr units::meters_per_second_t kMaxSpeed = 2_mps;
     //constexpr units::meters_per_second_t kMaxSpeed = 4.8_mps;
     constexpr units::radians_per_second_t kMaxAngularSpeed{2 * std::numbers::pi};
 
@@ -38,8 +38,12 @@ namespace DriveConstants {
     /*
     Todo: add TrackWidth and WheelBase measurements
     */
-    constexpr units::meter_t kTrackWidth = 0.6731_m;  // Distance between centers of right and left wheels on robot
-    constexpr units::meter_t kWheelBase = 0.6731_m;  // Distance between centers of front and back wheels on robot
+   // constexpr units::meter_t kTrackWidth = 0.6731_m;  //24 5/8" Distance between centers of right and left wheels on robot
+    //constexpr units::meter_t kWheelBase = 0.6731_m;  // 28" Distance between centers of front and back wheels on robot
+
+
+    constexpr units::meter_t kTrackWidth = 0.6515_m;  //24 5/8" Distance between centers of right and left wheels on robot
+    constexpr units::meter_t kWheelBase = 0.7112_m;  // 28" Distance between centers of front and back wheels on robot
 
     // Angular offsets of the modules relative to the chassis in radians
     constexpr double kFrontLeftChassisAngularOffset = -std::numbers::pi / 2;
@@ -148,7 +152,7 @@ namespace AutoConstants {
 namespace OIConstants {
     constexpr int kDriverControllerPort = 0;
     constexpr int kCoDriverControllerPort = 1;
-    constexpr double kDriveDeadband = 0.05;
+    constexpr double kDriveDeadband = 0.10;
 }  // namespace OIConstants
 
 namespace IntakeConstants {
