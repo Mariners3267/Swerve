@@ -143,11 +143,11 @@ units::length::inch_t rangeInInches = range;
 frc::SmartDashboard::PutNumber("Target Range in Inches", rangeInInches.value());
 frc::SmartDashboard::PutNumber("Target Range in Meters", range.value());
 
-/*
-The .value() converts units from meter_t to it's underlying value of a double
-https://docs.wpilib.org/en/stable/docs/software/basic-programming/cpp-units.html
 
-*/
+//The .value() converts units from meter_t to it's underlying value of a double
+//https://docs.wpilib.org/en/stable/docs/software/basic-programming/cpp-units.html
+
+
 
   //do like autonomous 
   //set current position to 0

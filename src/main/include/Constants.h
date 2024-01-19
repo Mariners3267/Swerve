@@ -11,7 +11,6 @@
 #include <units/length.h>
 #include <units/velocity.h>
 #include <map>
-#include <string>
 #include <numbers>
 
 #pragma once
@@ -75,39 +74,6 @@ namespace DriveConstants {
 
     //Each target may be at a different height
   const units::meter_t TARGET_HEIGHT = 5_ft;
-//April Tag Data
-std::map<int, std::String> targetType{
-    {1, 'Source'},
-    {2, 'Source'},
-    {3, 'Speaker'},
-    {4, 'TBD'},
-    {5, 'TBD'},
-    {6, 'TBD'},
-    {7, 'TBD'},
-    {8, 'TBD'},
-    {9, 'TBD'},
-    {10, 'TBD'},
-    {11, 'TBD'},
-    {12, 'TBD'},
-    {13, 'TBD'},
-    {14, 'TBD'}
-};
-std::map<int, units::meter_t> targetHeight{
-    {1, 122_cm},
-    {2, 122_cm},
-    {3, 132_cm},
-    {4, 0_cm},
-    {5, 0_cm},
-    {6, 0_cm},
-    {7, 0_cm},
-    {8, 0_cm},
-    {9, 0_cm},
-    {10, 0_cm},
-    {11, 0_cm},
-    {12, 0_cm},
-    {13, 0_cm},
-    {14, 0_cm}
-};
 
 }  // namespace DriveConstants
 
