@@ -20,7 +20,8 @@
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"
 #include "subsystems/Arm.h"
-
+#include <photon/PhotonCamera.h>
+#include "utils/AprilTagData.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -38,6 +39,7 @@ class RobotContainer {
  private:
   // The driver's controller
   frc::XboxController m_driverController{OIConstants::kDriverControllerPort};
+  frc::XboxController m_coDriverController{OIConstants::kCoDriverControllerPort};
 
   // The robot's subsystems and commands are defined here...
 
@@ -45,7 +47,10 @@ class RobotContainer {
   DriveSubsystem m_drive;
   Intake m_intake;
   Arm m_arm; 
+  AprilTagData aprilTag;
   
+  photon::PhotonCamera camera{"photonvision"};
+
   // The chooser for the autonomous routines
   frc::SendableChooser<frc2::Command*> m_chooser;
 

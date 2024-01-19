@@ -10,7 +10,6 @@
 #include <units/current.h>
 #include <units/length.h>
 #include <units/velocity.h>
-
 #include <numbers>
 
 #pragma once
@@ -66,6 +65,14 @@ namespace DriveConstants {
     constexpr int kFrontRightTurningCanId = 14;
     constexpr int kRearRightTurningCanId = 16;
 
+    //needs to be adjusted per our robot
+  const units::meter_t CAMERA_HEIGHT = 24_in;
+
+// Angle between horizontal and the camera.
+  const units::radian_t CAMERA_PITCH = 0_deg;
+
+    //Each target may be at a different height
+  const units::meter_t TARGET_HEIGHT = 5_ft;
 
 }  // namespace DriveConstants
 
@@ -160,3 +167,8 @@ namespace PivotConstants {
  constexpr double kPivotSpeed = 0.3; 
 
 }
+
+
+
+
+
