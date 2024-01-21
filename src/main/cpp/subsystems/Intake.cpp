@@ -24,10 +24,18 @@ Intake::Intake() {
 frc2::CommandPtr Intake::RunIntake() {
   // Inline construction of command goes here.
   // Subsystem::RunOnce implicitly requires `this` subsystem.
-  return RunOnce([ this ] { 
-    m_conveyorMotor.Set(kIntakeSpeed);
-    frc::SmartDashboard::PutString("Intake","Forward"); 
-    });
+  if (!isLoaded()){
+    return RunOnce([ this ] { 
+      m_conveyorMotor.Set(kIntakeSpeed);
+      frc::SmartDashboard::PutString("Intake","Attempting to Collect a Note"); 
+      });
+  }
+  else {
+     return RunOnce([ this ] { 
+      m_conveyorMotor.Set(0);
+      frc::SmartDashboard::PutString("Intake","Already Loaded, lets shoot this thing"); 
+      });
+  }
   //RunOnce creates a command that calls a lambda once, and then finishes.
 }
 
@@ -46,11 +54,12 @@ return RunOnce([ this ] {
     });
 }
 
-bool isLoaded() {
+bool Intake::isLoaded() {
   // Query some boolean state, such as a digital limit switch
   //The shooter will also be able to query this state of this limit switch 
   //If we are loaded, stop trying to load.
-  return false;
+  return m_loadedSensor.Get();
+  //return false;
 }
 
 void Intake::Periodic() {

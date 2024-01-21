@@ -157,14 +157,16 @@ namespace OIConstants {
 
 namespace IntakeConstants {
     constexpr int kConveyorCanId = 7;
+    constexpr int kConveyorPWMPort = 2;
     constexpr double kIntakeSpeed = 0.3;
+    constexpr int kIntakeLimitSwitchDIOPort = 0;
 }
 
 namespace ArmConstants {
  constexpr int kArmCanid = 1;
  constexpr int kArmCanid2 = 2; 
  constexpr double kArmSpeed = 0.1; 
- constexpr int kArmDio = 0;
+ constexpr int kArmDio = 1;
 }
 namespace PivotConstants {
  constexpr int kPivotCanid = 10; 
