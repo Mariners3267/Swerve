@@ -8,6 +8,9 @@
 #include <frc2/command/SubsystemBase.h>
 #include <rev/CANSparkMax.h>
 #include "Constants.h"
+#include <frc/DigitalInput.h>
+#include <frc/motorcontrol/PWMTalonSRX.h>
+
 
 class Intake : public frc2::SubsystemBase {
  public:
@@ -42,6 +45,8 @@ class Intake : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-  rev::CANSparkMax m_conveyorMotor{IntakeConstants::kConveyorCanId, rev::CANSparkLowLevel::MotorType::kBrushless};
+  frc::DigitalInput m_loadedSensor{IntakeConstants::kIntakeLimitSwitchDIOPort};
+  //rev::CANSparkMax m_conveyorMotor{IntakeConstants::kConveyorCanId, rev::CANSparkLowLevel::MotorType::kBrushless};
+  frc::PWMTalonSRX m_conveyorMotor{IntakeConstants::kConveyorPWMPort};
   //rev::CANSparkMax m_conveyorMotor(int deviceID, rev::CANSparkLowLevel::MotorType type);
 };
