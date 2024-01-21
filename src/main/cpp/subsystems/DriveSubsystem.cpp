@@ -31,6 +31,7 @@ DriveSubsystem::DriveSubsystem()
                  frc::Pose2d{}} {}
 
 void DriveSubsystem::Periodic() {
+  //frc::SmartDashboard::PutNumber("Pigeon", m_gyro.GetAngle());
   // Implementation of subsystem periodic method goes here.
   m_odometry.Update(frc::Rotation2d(units::radian_t{m_gyro.GetAngle()}),
                     {m_frontLeft.GetPosition(), m_rearLeft.GetPosition(),

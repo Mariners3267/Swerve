@@ -137,7 +137,7 @@ namespace ModuleConstants {
 Todo: ensure these values makes sense for our auto
 */
 namespace AutoConstants {
-    constexpr auto kMaxSpeed = 3_mps;
+    constexpr auto kMaxSpeed = 1_mps;
     constexpr auto kMaxAcceleration = 3_mps_sq;
     constexpr auto kMaxAngularSpeed = 3.142_rad_per_s;
     constexpr auto kMaxAngularAcceleration = 3.142_rad_per_s_sq;
