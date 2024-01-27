@@ -159,7 +159,16 @@ namespace IntakeConstants {
     constexpr int kConveyorCanId = 7;
     constexpr int kConveyorPWMPort = 2;
     constexpr double kIntakeSpeed = 0.3;
-    constexpr int kIntakeLimitSwitchDIOPort = 0;
+    constexpr int kIntakeLimitSwitchDIOPort = 1;
+}
+
+namespace ShooterConstants {
+    constexpr int kShooterCanId = 18;
+    constexpr int kFeederCanId = 19;
+    constexpr double kShooterSpeed = 0.7;
+    constexpr double kShooterRPMCheck = 5000.0;
+    constexpr double kFeederSpeed = 0.7;
+    constexpr int kNoteLoadedDigitalInputPort = 3;
 }
 
 namespace ArmConstants {
