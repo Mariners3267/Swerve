@@ -59,15 +59,15 @@ namespace DriveConstants {
     constexpr int kPigeonIMU = 9;
 
     // SPARK MAX CAN IDs
-    constexpr int kFrontLeftDrivingCanId = 11;
-    constexpr int kRearLeftDrivingCanId = 13; //13;
-    constexpr int kFrontRightDrivingCanId = 15;
-    constexpr int kRearRightDrivingCanId = 17;
+    constexpr int kFrontLeftDrivingCanId = 11; //11
+    constexpr int kRearLeftDrivingCanId = 13; //13
+    constexpr int kFrontRightDrivingCanId = 15; //15
+    constexpr int kRearRightDrivingCanId = 17; //17
 
-    constexpr int kFrontLeftTurningCanId = 10;
-    constexpr int kRearLeftTurningCanId = 12;
-    constexpr int kFrontRightTurningCanId = 14;
-    constexpr int kRearRightTurningCanId = 16;
+    constexpr int kFrontLeftTurningCanId = 10; //10
+    constexpr int kRearLeftTurningCanId = 12; //12
+    constexpr int kFrontRightTurningCanId = 14; //14
+    constexpr int kRearRightTurningCanId = 16; //16
 
     //needs to be adjusted per our robot
   const units::meter_t CAMERA_HEIGHT = 24_in;
