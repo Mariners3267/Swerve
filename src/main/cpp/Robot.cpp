@@ -8,7 +8,7 @@
 #include <frc2/command/CommandScheduler.h>
 
 void Robot::RobotInit() {
-  EnableLiveWindowInTest(true);
+ // EnableLiveWindowInTest(true);
   frc::SmartDashboard::PutNumber("ChooseRoutine", 1);
   }
 
