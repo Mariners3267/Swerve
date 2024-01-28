@@ -14,6 +14,7 @@
 #include <frc2/command/SequentialCommandGroup.h>
 #include <frc2/command/SwerveControllerCommand.h>
 #include <frc2/command/button/JoystickButton.h>
+#include <frc2/command/WaitUntilCommand.h>
 #include <units/angle.h>
 #include <units/velocity.h>
 
@@ -105,6 +106,17 @@ void RobotContainer::ConfigureButtonBindings() {
 
 
 //Second Controller
+    frc2::JoystickButton{&m_coDriverController,
+                        frc::XboxController::Button::kA}
+        .OnTrue(new frc2::RunCommand([this] {
+            m_shooter.SpinShooter();
+           // frc2::WaitUntilCommand([m_shooter.isShooterUpToSpeed() { return m_shooter.isShooterUpToSpeed(); })
+            
+        }, {&m_shooter}))
+        .OnFalse(new frc2::RunCommand([this] { 
+           m_shooter.StopShooter();
+        }, {&m_shooter}));
+
     frc2::JoystickButton(&m_coDriverController,
                        frc::XboxController::Button::kLeftBumper)
       .WhileTrue(new frc2::RunCommand([this] { 

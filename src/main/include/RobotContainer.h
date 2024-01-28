@@ -14,14 +14,17 @@
 #include <frc2/command/ParallelRaceGroup.h>
 #include <frc2/command/RunCommand.h>
 #include <frc2/command/CommandPtr.h>
+#include <frc2/command/WaitUntilCommand.h>
 #include <rev/CANSparkMax.h>
 #include <rev/CANSparkMaxLowLevel.h>
 #include "Constants.h"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"
 #include "subsystems/Arm.h"
+#include "subsystems/Shooter.h"
 #include <photon/PhotonCamera.h>
 #include "utils/AprilTagData.h"
+
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -47,6 +50,7 @@ class RobotContainer {
   DriveSubsystem m_drive;
   Intake m_intake;
   Arm m_arm; 
+  Shooter m_shooter; 
   AprilTagData aprilTag;
   
   photon::PhotonCamera camera{"photonvision"};
