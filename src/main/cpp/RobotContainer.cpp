@@ -75,11 +75,11 @@ void RobotContainer::ConfigureButtonBindings() {
       .WhileTrue(new frc2::RunCommand([this] { m_drive.SetX(); }, {&m_drive}));
 
 
-    frc2::JoystickButton(&m_driverController,
+    frc2::JoystickButton(&m_coDriverController,
                        frc::XboxController::Button::kX)
       .WhileTrue(new frc2::RunCommand([this] { m_intake.RunIntake(); }, {&m_intake}));     
 
-    frc2::JoystickButton(&m_driverController,
+    frc2::JoystickButton(&m_coDriverController,
                        frc::XboxController::Button::kY)
       .WhileTrue(new frc2::RunCommand([this] { m_intake.ReverseIntake(); }, {&m_intake}));  
 
