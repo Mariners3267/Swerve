@@ -25,6 +25,7 @@
 #include <photon/PhotonUtils.h>
 #include "utils/AprilTagData.h"
 #include <frc/DriverStation.h>
+#include "subsystems/Shooter.h"
 
 using namespace DriveConstants;
 
@@ -77,15 +78,18 @@ void RobotContainer::ConfigureButtonBindings() {
 
     frc2::JoystickButton(&m_driverController,
                        frc::XboxController::Button::kX)
-      .WhileTrue(new frc2::RunCommand([this] { m_intake.RunIntake(); }, {&m_intake}));     
+      .OnTrue(new frc2::RunCommand([this] { m_intake.RunIntake(); }, {&m_intake}));     
 
-    frc2::JoystickButton(&m_driverController,
+    frc2::JoystickButton(&m_driverController, 
                        frc::XboxController::Button::kY)
-      .WhileTrue(new frc2::RunCommand([this] { m_intake.ReverseIntake(); }, {&m_intake}));  
+      .OnTrue(new frc2::RunCommand([this] { m_intake.ReverseIntake(); }, {&m_intake}));  
 
     frc2::JoystickButton(&m_driverController,
                        frc::XboxController::Button::kLeftBumper)
-      .WhileTrue(new frc2::RunCommand([this] { m_intake.Stop(); }, {&m_intake}));      
+      .OnTrue(new frc2::RunCommand([this] { m_intake.Stop(); }, {&m_intake}));      
+    
+          
+
 
 
     frc2::JoystickButton(&m_driverController,
@@ -105,6 +109,23 @@ void RobotContainer::ConfigureButtonBindings() {
 
 
 //Second Controller
+  frc2::JoystickButton(&m_coDriverController,
+                       frc::XboxController::Button::kA)
+      .OnTrue(new frc2::RunCommand([this] { 
+        m_shooter.ShootUp();
+         }, {&m_shooter}))
+     .OnFalse(new frc2::RunCommand([this] { 
+        m_shooter.Stop(); 
+    }, {&m_shooter}));
+    frc2::JoystickButton(&m_coDriverController,
+                       frc::XboxController::Button::kB)
+      .OnTrue(new frc2::RunCommand([this] { 
+        m_shooter.ShootDown();
+         }, {&m_shooter}))
+     .OnFalse(new frc2::RunCommand([this] { 
+        m_shooter.Stop(); 
+    }, {&m_shooter}));
+
     frc2::JoystickButton(&m_coDriverController,
                        frc::XboxController::Button::kLeftBumper)
       .WhileTrue(new frc2::RunCommand([this] { 
@@ -194,27 +215,27 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
         // positive 2nd number = left, negative = right
         // Pass through these two interior waypoints, making an 's' curve path
         {
-        frc::Translation2d{1_m, 0_m},
-        frc::Translation2d{2_m, 0_m},
+        frc::Translation2d{3_ft, 0_m},
+        frc::Translation2d{4_ft, 0_m},
         },         
       // End 1 meters straight ahead of where we started, facing forward
-      frc::Pose2d{2_m, 0_m, 0_deg},
+      frc::Pose2d{4_ft, 0_m, 0_deg},
       // Pass the config
       config); 
-
-       // An example trajectory to follow.  All units in meters.
+     //need to activate the shooter & test shooter speed before shooting
+       
   auto rotateExampleTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(
       // Start at the origin facing the +X direction
-      frc::Pose2d{2_m, 0_m, 0_deg},
+      frc::Pose2d{4_ft, 0_m, 0_deg},
 
         // positive 2nd number = left, negative = right
-        // Pass through these two interior waypoints, making an 's' curve path
+        // Pass through these two interior waypoints
         {
-        frc::Translation2d{2.1_m, 0_m},
-        frc::Translation2d{2.2_m, 0_m},
+        frc::Translation2d{4.1_ft, 0_m},
+        frc::Translation2d{4.2_ft, 0_m},
         },         
-      // End 1 meters straight ahead of where we started, facing forward
-      frc::Pose2d{2.3_m, 0_m, 90_deg},
+    
+      frc::Pose2d{4.1_ft, 0_m, 95_deg},
       // Pass the config
       config);
 

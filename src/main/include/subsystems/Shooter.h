@@ -9,27 +9,20 @@
 #include <rev/CANSparkMax.h>
 #include "Constants.h"
 #include <frc/DigitalInput.h>
-#include <frc/motorcontrol/PWMTalonSRX.h>
 
-
-class Intake : public frc2::SubsystemBase {
+class Shooter : public frc2::SubsystemBase {
  public:
-  Intake();
+  Shooter();
 
   /**
    * Example command factory method.
    */
-  void RunIntake();
-  void ReverseIntake();
+
+  void ShootUp();
+  void ShootDown();
   void Stop();
   
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a
-   * digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  bool isLoaded();
+
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -45,8 +38,8 @@ class Intake : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-  frc::DigitalInput m_loadedSensor{IntakeConstants::kIntakeLimitSwitchDIOPort};
-  rev::CANSparkMax m_conveyorMotor{IntakeConstants::kConveyorCanId, rev::CANSparkLowLevel::MotorType::kBrushless};
-  //frc::PWMTalonSRX m_conveyorMotor{IntakeConstants::kConveyorPWMPort};
+  rev::CANSparkMax m_ShooterTwo{ShooterConstants::kShooterMotorTwoCanId, rev::CANSparkLowLevel::MotorType::kBrushless};
+  rev::CANSparkMax m_ShooterOne{ShooterConstants::kShooterMotorOneCanId, rev::CANSparkLowLevel::MotorType::kBrushless}; 
+
   //rev::CANSparkMax m_conveyorMotor(int deviceID, rev::CANSparkLowLevel::MotorType type);
 };

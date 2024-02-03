@@ -69,6 +69,7 @@ namespace DriveConstants {
     constexpr int kFrontRightTurningCanId = 14; //14
     constexpr int kRearRightTurningCanId = 16; //16
 
+
     //needs to be adjusted per our robot
   const units::meter_t CAMERA_HEIGHT = 24_in;
 
@@ -158,19 +159,26 @@ namespace OIConstants {
 namespace IntakeConstants {
     constexpr int kConveyorCanId = 7;
     constexpr int kConveyorPWMPort = 2;
-    constexpr double kIntakeSpeed = 0.3;
+    constexpr double kIntakeSpeed = 1;
     constexpr int kIntakeLimitSwitchDIOPort = 0;
 }
 
 namespace ArmConstants {
- constexpr int kArmCanid = 1;
- constexpr int kArmCanid2 = 2; 
+ constexpr int kArmCanid = 20;
+ constexpr int kArmCanid2 = 21;  //we are going to use 21 for the feeder
  constexpr double kArmSpeed = 0.1; 
  constexpr int kArmDio = 1;
 }
 namespace PivotConstants {
  constexpr int kPivotCanid = 10; 
  constexpr double kPivotSpeed = 0.3; 
+
+}
+namespace ShooterConstants{
+ constexpr int kShooterMotorOneCanId = 18; //18
+ constexpr int kShooterMotorTwoCanId = 19; //19
+ constexpr double kUpShooterSpeed = 0.08; // Shooter Speed Divided by 10
+ constexpr double kDownShooterSpeed = -0.08; // Shooter Speed Divided by 10
 
 }
 
