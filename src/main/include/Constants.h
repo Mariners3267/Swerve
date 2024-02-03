@@ -177,8 +177,8 @@ namespace PivotConstants {
 namespace ShooterConstants{
  constexpr int kShooterMotorOneCanId = 18; //18
  constexpr int kShooterMotorTwoCanId = 19; //19
- constexpr double kUpShooterSpeed = 0.08; // Shooter Speed Divided by 10
- constexpr double kDownShooterSpeed = -0.08; // Shooter Speed Divided by 10
+ constexpr double kUpShooterSpeed = 0.08; // shooter speed percentage
+ constexpr double kDownShooterSpeed = -0.08; // negative is backwards
 
 }
 
