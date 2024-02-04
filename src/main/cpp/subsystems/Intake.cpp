@@ -39,6 +39,7 @@ void Intake::RunIntake() {
 frc::SmartDashboard::PutString("Intake","Running"); 
 //return RunOnce([ this ] { 
   m_conveyorMotor.Set(IntakeConstants::kIntakeSpeed);
+  m_feederMotor.Set(IntakeConstants::kFeederSpeed);
  //   });
   
   //RunOnce creates a command that calls a lambda once, and then finishes.
@@ -50,6 +51,7 @@ void Intake::ReverseIntake() {
   frc::SmartDashboard::PutString("Intake","Reversed"); 
   //return RunOnce([ this ] { 
   m_conveyorMotor.Set(-IntakeConstants::kIntakeSpeed);
+  m_feederMotor.Set(IntakeConstants::kReverseFeederSpeed);
    // });
  // return RunOnce([ this ] { 
    // m_conveyorMotor.Set(-kIntakeSpeed);
@@ -61,6 +63,7 @@ void Intake::Stop(){
 frc::SmartDashboard::PutString("Intake","Stopped"); 
 //return RunOnce([ this ] { 
   m_conveyorMotor.Set(0);
+  m_feederMotor.Set(0);
 //    });
 }
 

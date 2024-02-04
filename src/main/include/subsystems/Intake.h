@@ -47,6 +47,7 @@ class Intake : public frc2::SubsystemBase {
   // declared private and exposed only through public methods.
   frc::DigitalInput m_loadedSensor{IntakeConstants::kIntakeLimitSwitchDIOPort};
   rev::CANSparkMax m_conveyorMotor{IntakeConstants::kConveyorCanId, rev::CANSparkLowLevel::MotorType::kBrushless};
+  rev::CANSparkMax m_feederMotor{IntakeConstants::kFeederCanID, rev::CANSparkLowLevel::MotorType::kBrushless};
   //frc::PWMTalonSRX m_conveyorMotor{IntakeConstants::kConveyorPWMPort};
   //rev::CANSparkMax m_conveyorMotor(int deviceID, rev::CANSparkLowLevel::MotorType type);
 };

@@ -40,6 +40,7 @@ class Shooter : public frc2::SubsystemBase {
   // declared private and exposed only through public methods.
   rev::CANSparkMax m_ShooterTwo{ShooterConstants::kShooterMotorTwoCanId, rev::CANSparkLowLevel::MotorType::kBrushless};
   rev::CANSparkMax m_ShooterOne{ShooterConstants::kShooterMotorOneCanId, rev::CANSparkLowLevel::MotorType::kBrushless}; 
+  rev::SparkRelativeEncoder m_ShooterOneEncoder = m_ShooterOne.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor);
 
   //rev::CANSparkMax m_conveyorMotor(int deviceID, rev::CANSparkLowLevel::MotorType type);
 };
