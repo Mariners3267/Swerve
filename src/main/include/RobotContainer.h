@@ -22,6 +22,7 @@
 #include "subsystems/Arm.h"
 #include <photon/PhotonCamera.h>
 #include "utils/AprilTagData.h"
+#include "subsystems/Shooter.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -48,6 +49,7 @@ class RobotContainer {
   Intake m_intake;
   Arm m_arm; 
   AprilTagData aprilTag;
+  Shooter m_shooter;
   
   photon::PhotonCamera camera{"photonvision"};
 

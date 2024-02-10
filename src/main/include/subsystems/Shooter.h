@@ -8,25 +8,22 @@
 #include <frc2/command/SubsystemBase.h>
 #include <rev/CANSparkMax.h>
 #include "Constants.h"
+#include <frc/DigitalInput.h>
 
-class Pivot : public frc2::SubsystemBase {
+class Shooter : public frc2::SubsystemBase {
  public:
-  Pivot();
+  Shooter();
 
   /**
    * Example command factory method.
    */
-  frc2::CommandPtr RunPivot();
-  frc2::CommandPtr ReversePivot();
-  frc2::CommandPtr Stop();
+
+  void ShootUp();
+  void ShootDown();
+  void Stop();
+  void mrBloadintoshooter();
   
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a
-   * digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  bool is_arm_up();
+
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -42,6 +39,9 @@ class Pivot : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-  rev::CANSparkMax m_Pivot{PivotConstants::kPivotCanid, rev::CANSparkLowLevel::MotorType::kBrushless};
+  rev::CANSparkMax m_ShooterTwo{ShooterConstants::kShooterMotorTwoCanId, rev::CANSparkLowLevel::MotorType::kBrushless};
+  rev::CANSparkMax m_ShooterOne{ShooterConstants::kShooterMotorOneCanId, rev::CANSparkLowLevel::MotorType::kBrushless}; 
+  rev::SparkRelativeEncoder m_ShooterOneEncoder = m_ShooterOne.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor);
+
   //rev::CANSparkMax m_conveyorMotor(int deviceID, rev::CANSparkLowLevel::MotorType type);
 };

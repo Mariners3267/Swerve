@@ -18,7 +18,7 @@ class Arm : public frc2::SubsystemBase {
    * Example command factory method.
    */
 
-  bool RunArm();
+  void RunArm();
   void ReverseArm();
   void Stop();
   
@@ -44,8 +44,9 @@ class Arm : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-  rev::CANSparkMax m_arm{ArmConstants::kArmCanid, rev::CANSparkLowLevel::MotorType::kBrushless};
-  rev::CANSparkMax m_arm2{ArmConstants::kArmCanid2, rev::CANSparkLowLevel::MotorType::kBrushless};
-  frc::DigitalInput m_clicker{ArmConstants::kArmDio};
+  rev::CANSparkMax m_armMotor{ArmConstants::kArmCanid, rev::CANSparkLowLevel::MotorType::kBrushless};
+  rev::SparkRelativeEncoder m_ArmEncoder = m_armMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor);
   //rev::CANSparkMax m_conveyorMotor(int deviceID, rev::CANSparkLowLevel::MotorType type);
+  frc::DigitalInput m_ampLimitSwitch{ArmConstants::kArmDIOLimitPort};
+  // Digital IO Classification
 };

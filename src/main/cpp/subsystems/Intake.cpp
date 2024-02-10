@@ -21,9 +21,10 @@ Intake::Intake() {
   
 }
 
-frc2::CommandPtr Intake::RunIntake() {
+void Intake::RunIntake() {
   // Inline construction of command goes here.
   // Subsystem::RunOnce implicitly requires `this` subsystem.
+  /*
   if (!isLoaded()){
     return RunOnce([ this ] { 
       m_conveyorMotor.Set(kIntakeSpeed);
@@ -34,24 +35,36 @@ frc2::CommandPtr Intake::RunIntake() {
      return RunOnce([ this ] { 
       m_conveyorMotor.Set(0);
       frc::SmartDashboard::PutString("Intake","Already Loaded, lets shoot this thing"); 
-      });
-  }
+      }); */
+frc::SmartDashboard::PutString("Intake","Running"); 
+//return RunOnce([ this ] { 
+  m_conveyorMotor.Set(IntakeConstants::kIntakeSpeed);
+  m_feederMotor.Set(IntakeConstants::kFeederSpeed);
+ //   });
+  
   //RunOnce creates a command that calls a lambda once, and then finishes.
 }
 
-frc2::CommandPtr Intake::ReverseIntake() {
+void Intake::ReverseIntake() {
   // Inline construction of command goes here.
   // Subsystem::RunOnce implicitly requires `this` subsystem.
-  return RunOnce([ this ] { 
-    m_conveyorMotor.Set(-kIntakeSpeed);
-    frc::SmartDashboard::PutString("Intake","Reverse"); 
-    });
+  frc::SmartDashboard::PutString("Intake","Reversed"); 
+  //return RunOnce([ this ] { 
+  m_conveyorMotor.Set(-IntakeConstants::kIntakeSpeed);
+  m_feederMotor.Set(IntakeConstants::kReverseFeederSpeed);
+   // });
+ // return RunOnce([ this ] { 
+   // m_conveyorMotor.Set(-kIntakeSpeed);
+ //   frc::SmartDashboard::PutString("Intake","Reverse"); 
+  //  });
 }
 
-frc2::CommandPtr Intake::Stop(){
-return RunOnce([ this ] { 
+void Intake::Stop(){
+frc::SmartDashboard::PutString("Intake","Stopped"); 
+//return RunOnce([ this ] { 
   m_conveyorMotor.Set(0);
-    });
+  m_feederMotor.Set(0);
+//    });
 }
 
 bool Intake::isLoaded() {

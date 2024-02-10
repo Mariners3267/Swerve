@@ -19,9 +19,9 @@ class Intake : public frc2::SubsystemBase {
   /**
    * Example command factory method.
    */
-  frc2::CommandPtr RunIntake();
-  frc2::CommandPtr ReverseIntake();
-  frc2::CommandPtr Stop();
+  void RunIntake();
+  void ReverseIntake();
+  void Stop();
   
   /**
    * An example method querying a boolean state of the subsystem (for example, a
@@ -46,7 +46,8 @@ class Intake : public frc2::SubsystemBase {
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
   frc::DigitalInput m_loadedSensor{IntakeConstants::kIntakeLimitSwitchDIOPort};
-  //rev::CANSparkMax m_conveyorMotor{IntakeConstants::kConveyorCanId, rev::CANSparkLowLevel::MotorType::kBrushless};
-  frc::PWMTalonSRX m_conveyorMotor{IntakeConstants::kConveyorPWMPort};
+  rev::CANSparkMax m_conveyorMotor{IntakeConstants::kConveyorCanId, rev::CANSparkLowLevel::MotorType::kBrushless};
+  rev::CANSparkMax m_feederMotor{IntakeConstants::kFeederCanID, rev::CANSparkLowLevel::MotorType::kBrushless};
+  //frc::PWMTalonSRX m_conveyorMotor{IntakeConstants::kConveyorPWMPort};
   //rev::CANSparkMax m_conveyorMotor(int deviceID, rev::CANSparkLowLevel::MotorType type);
 };

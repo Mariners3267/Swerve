@@ -18,24 +18,24 @@ Todo: Will need to make methods that make sense for what the intake will do
 Arm::Arm() {
   // Implementation of subsystem constructor goes here.
   //frc::PWMSparkMax m_conveyorMotor(kconveyorMotorPort);
-  
+ // m_armMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kBrake);
 }
 
-bool Arm::RunArm() {
+void Arm::RunArm() {
   // Inline construction of command goes here.
   // Subsystem::RunOnce implicitly requires `this` subsystem.
+   
+   
     if (is_arm_up()){
-      m_arm.Set(kArmSpeed);
-      m_arm2.Set(kArmSpeed);
-      frc::SmartDashboard::PutString("Arm_Angle","Up"); 
-      return true;
+      m_armMotor.Set(0);
     }
     else {
-      frc::SmartDashboard::PutString("Arm_Angle","Already Loaded");
-      m_arm.Set(0);
-      return false;
-    }
+     m_armMotor.Set(kArmSpeed);
+    } 
     
+ // m_armMotor.Set(kArmSpeed);
+  // frc::SmartDashboard::PutNumber("Arm_Angle",m_ArmEncoder.GetPosition()); 
+   
   //RunOnce creates a command that calls a lambda once, and then finishes.
 }
 
@@ -43,28 +43,30 @@ void Arm::ReverseArm() {
   // Inline construction of command goes here.
   // Subsystem::RunOnce implicitly requires `this` subsystem.
   
-    m_arm.Set(-kArmSpeed);
-    m_arm2.Set(-kArmSpeed);
-    frc::SmartDashboard::PutString("Arm_Angle","Down"); 
-    
+    m_armMotor.Set(-kArmSpeed);
+   // frc::SmartDashboard::PutNumber("Arm_Angle",m_ArmEncoder.GetPosition()); 
 }
 
 void Arm::Stop(){
-  frc::SmartDashboard::PutString("Arm_Angle","notGoing"); 
-  m_arm.Set(0);
-  m_arm2.Set(0);
+  m_armMotor.Set(0);
 }
 
 bool Arm::is_arm_up() {
   // Query some boolean state, such as a digital sensor.
-  return m_clicker.Get();
+
+  return m_ampLimitSwitch.Get() ? false : true;
+  
 }
 
 void Arm::Periodic() {
   // Implementation of subsystem periodic method goes here.
-  frc::SmartDashboard::PutString("Arm_Subsystem","Periodic"); 
+  frc::SmartDashboard::PutNumber("Arm_Angle",m_ArmEncoder.GetPosition()); 
+  frc::SmartDashboard::PutBoolean("Limit switch",is_arm_up());
 }
 
 void Arm::SimulationPeriodic() {
   // Implementation of subsystem simulation periodic method goes here.
 }
+
+
+
