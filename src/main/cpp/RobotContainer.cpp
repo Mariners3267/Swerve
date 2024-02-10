@@ -27,6 +27,7 @@
 #include "utils/AprilTagData.h"
 #include <frc/DriverStation.h>
 #include "subsystems/Shooter.h"
+#include "subsystems/Intake.h"
 
 using namespace DriveConstants;
 
@@ -238,38 +239,50 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
   // An example trajectory to follow.  All units in meters.
   auto exampleTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(
       // Start at the origin facing the +X direction
-    frc::Pose2d{0_m, 0_m, 0_deg},
+    frc::Pose2d{0_ft, 0_ft, 0_deg},
 
         // positive 2nd number = left, negative = right
         // Pass through these two interior waypoints, making an 's' curve path
         {
-        frc::Translation2d{1_ft, 0_m},
-        frc::Translation2d{2_ft, 0_m},
+        frc::Translation2d{1_ft, 0_ft},
         },         
       // End 1 meters straight ahead of where we started, facing forward
-      frc::Pose2d{3_ft, 0_m, 0_deg},
+      frc::Pose2d{5_ft, 0_ft, 0_deg},
       // Pass the config
       config); 
-     //need to activate the shooter & test shooter speed before shooting
-       
+
+       // An example trajectory to follow.  All units in meters.
   auto rotateExampleTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(
       // Start at the origin facing the +X direction
-      frc::Pose2d{0_ft, 0_m, 0_deg},
+      frc::Pose2d{2_m, 0_m, 0_deg},
 
         // positive 2nd number = left, negative = right
-        // Pass through these two interior waypoints
+        // Pass through these two interior waypoints, making an 's' curve path
         {
-        frc::Translation2d{0_ft, 0_m},
-        frc::Translation2d{0_ft, 0_m},
+        frc::Translation2d{2.1_m, 0_m},
+        frc::Translation2d{2.2_m, 0_m},
         },         
-    
+      // End 1 meters straight ahead of where we started, facing forward
+      frc::Pose2d{2.3_m, 0_m, 90_deg},
+      // Pass the config
+      config);
+       auto backwardExampleTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(
+      // Start at the origin facing the +X direction
+      frc::Pose2d{5_ft, 0_m, 0_deg},
+
+        // positive 2nd number = left, negative = right
+        // Pass through these two interior waypoints, making an 's' curve path
+        {
+        frc::Translation2d{3_ft, 0_m},
+        },         
+      // End 1 meters straight ahead of where we started, facing forward
       frc::Pose2d{0_ft, 0_m, 0_deg},
       // Pass the config
       config);
 
 
 
-  frc::ProfiledPIDController<units::radians> thetaController{
+   frc::ProfiledPIDController<units::radians> thetaController{
       AutoConstants::kPThetaController, 0, 0,
       AutoConstants::kThetaControllerConstraints};
 
@@ -301,22 +314,46 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
 
       {&m_drive});
 
+          frc2::SwerveControllerCommand<4> backwardControllerCommand(
+      backwardExampleTrajectory, [this]() { return m_drive.GetPose(); },
+
+      m_drive.kDriveKinematics,
+
+      frc::PIDController{AutoConstants::kPXController, 0, 0},
+      frc::PIDController{AutoConstants::kPYController, 0, 0}, thetaController,
+
+      [this](auto moduleStates) { m_drive.SetModuleStates(moduleStates); },
+
+      {&m_drive});
+
   // Reset odometry to the starting pose of the trajectory.
   m_drive.ResetOdometry(exampleTrajectory.InitialPose());
 
   // no auto
   return new frc2::SequentialCommandGroup(
-    //std::move(swerveControllerCommand)
-      //frc2::RunCommand([this]{ m_shooter.ShootUp();},{&m_shooter})
-     /* frc2::WaitCommand(1.0_s),
-      frc2::RunCommand([this] { m_intake.RunIntake(); }, {&m_intake}),
+     // std::move(swerveControllerCommand),
+     // std::move(rotateControllerCommand),
+    // frc2::InstantCommand([this]() { m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false); },{}),
+      //frc2::RunCommand([this] { while(!m_arm.is_arm_up()){ m_arm.RunArm();} m_arm.Stop(); }, {&m_arm}),
+      frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
       frc2::WaitCommand(0.5_s),
-      frc2::RunCommand([this] { m_intake.Stop(); }, {&m_intake}), 
-     // std::move(swerveControllerCommand), everything is 0_m / 0_deg for test
-     // std::move(rotateControllerCommand), everything is 0_m / 0_deg for test
-      frc2::InstantCommand([this]() { m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false); },{})
-     // frc2::RunCommand([this] { m_arm.RunArm(); }, {&m_arm}) */
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
       std::move(swerveControllerCommand),
-      frc2::InstantCommand([this]() { m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false); },{})  
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::WaitCommand(0.1_s),
+      frc2::InstantCommand([this] {m_intake.ReverseIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.1_s),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      std::move(backwardControllerCommand),
+      frc2::WaitCommand(1_s),
+      frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      std::move(swerveControllerCommand)
+         
   );
 }

@@ -28,14 +28,9 @@ void Arm::RunArm() {
    
     if (is_arm_up()){
       m_armMotor.Set(0);
-      
-      
-    
     }
     else {
-      
      m_armMotor.Set(kArmSpeed);
-    
     } 
     
  // m_armMotor.Set(kArmSpeed);
