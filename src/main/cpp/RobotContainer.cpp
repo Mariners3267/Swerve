@@ -14,6 +14,7 @@
 #include <frc2/command/SequentialCommandGroup.h>
 #include <frc2/command/SwerveControllerCommand.h>
 #include <frc2/command/button/JoystickButton.h>
+#include <frc2/command/WaitCommand.h>
 #include <units/angle.h>
 #include <units/velocity.h>
 
@@ -76,32 +77,17 @@ void RobotContainer::ConfigureButtonBindings() {
       .WhileTrue(new frc2::RunCommand([this] { m_drive.SetX(); }, {&m_drive}));
 
 
-    frc2::JoystickButton(&m_coDriverController,
-                       frc::XboxController::Button::kX)
-      .OnTrue(new frc2::RunCommand([this] { m_intake.RunIntake(); }, {&m_intake}))
-      .OnFalse(new frc2::RunCommand([this] { 
-        m_intake.Stop(); 
-    }, {&m_intake}));     
-
-    frc2::JoystickButton(&m_coDriverController, 
-                       frc::XboxController::Button::kY)
-      .OnTrue(new frc2::RunCommand([this] { m_intake.ReverseIntake(); }, {&m_intake}))
-      .OnFalse(new frc2::RunCommand([this] { 
-        m_intake.Stop(); 
-    }, {&m_intake}));  
+   
 
     frc2::JoystickButton(&m_driverController,
                        frc::XboxController::Button::kLeftBumper)
       .OnTrue(new frc2::RunCommand([this] { m_intake.Stop(); }, {&m_intake}));      
     
           
-
-
-
     frc2::JoystickButton(&m_driverController,
-                    frc::XboxController::Button::kA)
+                    frc::XboxController::Button::kX)
     .OnTrue(new frc2::RunCommand([this] { 
-        m_arm.RunArm(); 
+        m_arm.ReverseArm(); 
     }, {&m_arm}))
     .OnFalse(new frc2::RunCommand([this] { 
         m_arm.Stop(); 
@@ -109,12 +95,32 @@ void RobotContainer::ConfigureButtonBindings() {
 
     frc2::JoystickButton(&m_driverController,
                     frc::XboxController::Button::kB)
-    .WhileTrue(new frc2::RunCommand([this] { 
-          m_arm.Stop();
-        }, {&m_arm})); 
-
+    .OnTrue(new frc2::RunCommand([this] { 
+        m_arm.RunArm(); 
+    }, {&m_arm}))
+    .OnFalse(new frc2::RunCommand([this] { 
+        m_arm.Stop(); 
+    }, {&m_arm}));
 
 //Second Controller
+      frc2::JoystickButton(&m_coDriverController,
+                       frc::XboxController::Button::kRightBumper)
+      .OnTrue(new frc2::RunCommand([this] { 
+        m_shooter.mrBloadintoshooter();
+         }, {&m_shooter}))
+     .OnFalse(new frc2::RunCommand([this] { 
+        m_shooter.Stop(); 
+    }, {&m_shooter}));
+
+          frc2::JoystickButton(&m_coDriverController,
+                       frc::XboxController::Button::kRightBumper)
+      .OnTrue(new frc2::RunCommand([this] { 
+        m_intake.RunIntake();
+         }, {&m_intake}))
+     .OnFalse(new frc2::RunCommand([this] { 
+        m_intake.Stop(); 
+    }, {&m_intake}));
+
   frc2::JoystickButton(&m_coDriverController,
                        frc::XboxController::Button::kA)
       .OnTrue(new frc2::RunCommand([this] { 
@@ -133,7 +139,22 @@ void RobotContainer::ConfigureButtonBindings() {
     }, {&m_shooter}));
 
     frc2::JoystickButton(&m_coDriverController,
-                       frc::XboxController::Button::kLeftBumper)
+                       frc::XboxController::Button::kX)
+      .OnTrue(new frc2::RunCommand([this] { m_intake.RunIntake(); }, {&m_intake}))
+      .OnFalse(new frc2::RunCommand([this] { 
+        m_intake.Stop(); 
+    }, {&m_intake}));     
+
+    frc2::JoystickButton(&m_coDriverController, 
+                       frc::XboxController::Button::kY)
+      .OnTrue(new frc2::RunCommand([this] { m_intake.ReverseIntake(); }, {&m_intake}))
+      .OnFalse(new frc2::RunCommand([this] { 
+        m_intake.Stop(); 
+    }, {&m_intake}));  
+    
+
+    frc2::JoystickButton(&m_coDriverController,
+                       frc::XboxController::Button::kStart)
       .WhileTrue(new frc2::RunCommand([this] { 
         //get the camera target info 
 //const std::string alliance = frc::DriverStation::GetAlliance();
@@ -147,6 +168,7 @@ void RobotContainer::ConfigureButtonBindings() {
             frc::SmartDashboard::GetNumber("ChooseRoutine", 1);
         }
     }
+
      
 
 
@@ -221,27 +243,27 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
         // positive 2nd number = left, negative = right
         // Pass through these two interior waypoints, making an 's' curve path
         {
-        frc::Translation2d{3_ft, 0_m},
-        frc::Translation2d{4_ft, 0_m},
+        frc::Translation2d{1_ft, 0_m},
+        frc::Translation2d{2_ft, 0_m},
         },         
       // End 1 meters straight ahead of where we started, facing forward
-      frc::Pose2d{4_ft, 0_m, 0_deg},
+      frc::Pose2d{3_ft, 0_m, 0_deg},
       // Pass the config
       config); 
      //need to activate the shooter & test shooter speed before shooting
        
   auto rotateExampleTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(
       // Start at the origin facing the +X direction
-      frc::Pose2d{4_ft, 0_m, 0_deg},
+      frc::Pose2d{0_ft, 0_m, 0_deg},
 
         // positive 2nd number = left, negative = right
         // Pass through these two interior waypoints
         {
-        frc::Translation2d{4.1_ft, 0_m},
-        frc::Translation2d{4.2_ft, 0_m},
+        frc::Translation2d{0_ft, 0_m},
+        frc::Translation2d{0_ft, 0_m},
         },         
     
-      frc::Pose2d{4.1_ft, 0_m, 95_deg},
+      frc::Pose2d{0_ft, 0_m, 0_deg},
       // Pass the config
       config);
 
@@ -266,6 +288,7 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
 
       {&m_drive});
 
+
     frc2::SwerveControllerCommand<4> rotateControllerCommand(
       rotateExampleTrajectory, [this]() { return m_drive.GetPose(); },
 
@@ -283,11 +306,17 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
 
   // no auto
   return new frc2::SequentialCommandGroup(
+    //std::move(swerveControllerCommand)
+      //frc2::RunCommand([this]{ m_shooter.ShootUp();},{&m_shooter})
+     /* frc2::WaitCommand(1.0_s),
+      frc2::RunCommand([this] { m_intake.RunIntake(); }, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::RunCommand([this] { m_intake.Stop(); }, {&m_intake}), 
+     // std::move(swerveControllerCommand), everything is 0_m / 0_deg for test
+     // std::move(rotateControllerCommand), everything is 0_m / 0_deg for test
+      frc2::InstantCommand([this]() { m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false); },{})
+     // frc2::RunCommand([this] { m_arm.RunArm(); }, {&m_arm}) */
       std::move(swerveControllerCommand),
-      std::move(rotateControllerCommand),
-     frc2::InstantCommand([this]() { m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false); },{}),
-      frc2::RunCommand([this] { m_arm.RunArm(); }, {&m_arm})
-      
-        
+      frc2::InstantCommand([this]() { m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false); },{})  
   );
 }

@@ -21,6 +21,7 @@ class Shooter : public frc2::SubsystemBase {
   void ShootUp();
   void ShootDown();
   void Stop();
+  void mrBloadintoshooter();
   
 
 

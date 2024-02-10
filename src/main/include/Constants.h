@@ -160,7 +160,7 @@ namespace IntakeConstants {
     constexpr int kConveyorCanId = 7;
     constexpr int kConveyorPWMPort = 2;                                                                                                                                                             
     constexpr double kIntakeSpeed = 0.7;
-    constexpr int kIntakeLimitSwitchDIOPort = 0;
+    constexpr int kIntakeLimitSwitchDIOPort = 1;
     constexpr int kFeederCanID = 21;
     constexpr double kFeederSpeed = 0.25;
     constexpr double kReverseFeederSpeed = -0.15;
@@ -168,20 +168,16 @@ namespace IntakeConstants {
 }
 
 namespace ArmConstants {
- constexpr int kArmCanid = 22;
- constexpr int kArmCanid2 = 23;  //we are going to use 21 for the feeder
- constexpr double kArmSpeed = 0.1; 
- constexpr int kArmDio = 1;
+ constexpr int kArmCanid = 18;
+ constexpr double kArmSpeed = 0.125; 
+ constexpr int kArmDIOLimitPort = 0;
 }
-namespace PivotConstants {
- constexpr int kPivotCanid = 10;
- constexpr double kPivotSpeed = 0.1; 
 
-}
 namespace ShooterConstants{
  constexpr int kShooterMotorOneCanId = 19; //18
  constexpr int kShooterMotorTwoCanId = 20; //19
  constexpr double kUpShooterSpeed = 0.7; // shooter speed percentage 0 to 1
  constexpr double kDownShooterSpeed = -0.15; // negative is backwards
+ constexpr double kintoShooterSpeed = 0.15; // mr b wanted me to do this
 
 }

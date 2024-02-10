@@ -20,7 +20,12 @@ Todo: Will need to make methods that make sense for what the intake will do
   //frc::PWMSparkMax m_conveyorMotor(kconveyorMotorPort);
   
 }
+void Shooter::mrBloadintoshooter() { // mr b wanted me to do this
+  m_ShooterOne.Set(kintoShooterSpeed);
+  m_ShooterTwo.Set(kintoShooterSpeed);
 
+  frc::SmartDashboard::PutNumber("ShooterStatus",m_ShooterOneEncoder.GetPosition());
+}
 void Shooter::ShootUp() {
     m_ShooterOne.Set(kUpShooterSpeed);
     m_ShooterTwo.Set(kUpShooterSpeed);
