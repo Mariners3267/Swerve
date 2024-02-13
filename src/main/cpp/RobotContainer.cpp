@@ -17,6 +17,7 @@
 #include <frc2/command/WaitCommand.h>
 #include <units/angle.h>
 #include <units/velocity.h>
+#include <frc2/command/FunctionalCommand.h>
 
 #include <utility>
 
@@ -52,8 +53,17 @@ RobotContainer::RobotContainer() {
 
 
 
+
   // Configure the button bindings
   ConfigureButtonBindings();
+
+  m_chooser.SetDefaultOption(kAutoNameRed1, kAutoNameRed1);
+  m_chooser.AddOption(kAutoNameRed2, kAutoNameRed2);
+  m_chooser.AddOption(kAutoNameRed3, kAutoNameRed3);
+  m_chooser.AddOption(kAutoNameBlue1, kAutoNameBlue1);
+  m_chooser.AddOption(kAutoNameBlue2, kAutoNameBlue2);
+  m_chooser.AddOption(kAutoNameBlue3, kAutoNameBlue3);
+  frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
   // Set up default drive command
   // The left stick controls translation of the robot.
@@ -73,6 +83,11 @@ RobotContainer::RobotContainer() {
 }
 
 void RobotContainer::ConfigureButtonBindings() {
+    frc2::JoystickButton(&m_driverController,
+                       frc::XboxController::Button::kStart)
+      .WhileTrue(new frc2::RunCommand([this] { m_drive.ZeroHeading(); }, {&m_drive}));
+  
+  
   frc2::JoystickButton(&m_driverController,
                        frc::XboxController::Button::kRightBumper)
       .WhileTrue(new frc2::RunCommand([this] { m_drive.SetX(); }, {&m_drive}));
@@ -154,79 +169,6 @@ void RobotContainer::ConfigureButtonBindings() {
     }, {&m_intake}));  
     
 
-    frc2::JoystickButton(&m_coDriverController,
-                       frc::XboxController::Button::kStart)
-      .WhileTrue(new frc2::RunCommand([this] { 
-        //get the camera target info 
-//const std::string alliance = frc::DriverStation::GetAlliance();
-    if (auto ally = frc::DriverStation::GetAlliance()) {
-        if (ally.value() == frc::DriverStation::Alliance::kRed) {
-            //we red
-            frc::SmartDashboard::PutString("Our Alliance", "RED");
-        }
-        if (ally.value() == frc::DriverStation::Alliance::kBlue) {
-            //we blue
-            frc::SmartDashboard::GetNumber("ChooseRoutine", 1);
-        }
-    }
-
-     
-
-
-        photon::PhotonPipelineResult result = camera.GetLatestResult();
-        result.HasTargets() ? frc::SmartDashboard::PutString("has le target", "true"): frc::SmartDashboard::PutString("has le target", "false");
-
-        if (result.HasTargets()) {
-            double Yehaw = result.GetBestTarget().GetPitch();
-            int targetID = result.GetBestTarget().GetFiducialId();
-            frc::SmartDashboard::PutNumber("Yehaw", Yehaw);
-            frc::SmartDashboard::PutNumber("targetID", targetID);
-            
-
-            units::length::meter_t targetDataHeight = aprilTag.returnAprilTagDataHeight(targetID);
-            const std::string targetDataType = aprilTag.returnAprilTagDataTargetType(targetID);
-            const std::string redOrBlue = aprilTag.returnAprilTagDataTargetAlliance(targetID);
-            
-
-            
-
-            //Target has to match the alliance we are currently on ie red/blue
-            //If we are loaded we only care about speaker targets
-            //If we are NOT loaded we only care about source targets
-
-            if (targetID == 23) {
-
-                units::meter_t range = photon::PhotonUtils::CalculateDistanceToTarget(
-                CAMERA_HEIGHT, targetDataHeight, CAMERA_PITCH,
-                units::degree_t{result.GetBestTarget().GetPitch()});
-                m_drive.PhotonDrive(targetID, Yehaw, range); 
-                
-            }
-            
-            else {
-            //If we don't care about this target - leave it in controll of the driver
-            m_drive.Drive(
-            -units::meters_per_second_t{frc::ApplyDeadband(
-                m_driverController.GetLeftY(), OIConstants::kDriveDeadband)},
-            -units::meters_per_second_t{frc::ApplyDeadband(
-                m_driverController.GetLeftX(), OIConstants::kDriveDeadband)},
-            -units::radians_per_second_t{frc::ApplyDeadband(
-                m_driverController.GetRightX(), OIConstants::kDriveDeadband)},
-            true, true);
-            }
-        }
-        else {
-            //If we don't have any vision targets - leave it in controll of the driver
-            m_drive.Drive(
-            -units::meters_per_second_t{frc::ApplyDeadband(
-                m_driverController.GetLeftY(), OIConstants::kDriveDeadband)},
-            -units::meters_per_second_t{frc::ApplyDeadband(
-                m_driverController.GetLeftX(), OIConstants::kDriveDeadband)},
-            -units::radians_per_second_t{frc::ApplyDeadband(
-                m_driverController.GetRightX(), OIConstants::kDriveDeadband)},
-            true, true);
-        }
-      }, {&m_drive}));
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
@@ -280,7 +222,50 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
       // Pass the config
       config);
 
+       auto Blue2Trajectory1 = frc::TrajectoryGenerator::GenerateTrajectory(
+      // Start at the origin facing the +X direction
+      frc::Pose2d{0_in, 0_in, 0_deg},
 
+        // positive 2nd number = left, negative = right
+        {
+        frc::Translation2d{22_in, 0_in}
+        },         
+      frc::Pose2d{45_in, 0_in, 0_deg},
+      // Pass the config
+      config);
+       auto Blue2Trajectory2 = frc::TrajectoryGenerator::GenerateTrajectory(
+      // Start at the origin facing the +X direction
+      frc::Pose2d{45_in, 0_in, 0_deg},
+
+        // positive 2nd number = left, negative = right
+        {
+        frc::Translation2d{60_in, 0_in},
+        },         
+      frc::Pose2d{81_in, 0_in, 0_deg},
+      // Pass the config
+      config);
+       auto Blue2Trajectory3 = frc::TrajectoryGenerator::GenerateTrajectory(
+      // Start at the origin facing the +X direction
+      frc::Pose2d{44_in, 0_in, 0_deg},
+
+        // positive 2nd number = left, negative = right
+        {
+        frc::Translation2d{70_in, 0_in},
+        },         
+      frc::Pose2d{76_in, 0_in, 0_deg},
+      // Pass the config
+      config);
+       auto Blue2Trajectory4 = frc::TrajectoryGenerator::GenerateTrajectory(
+      // Start at the origin facing the +X direction
+      frc::Pose2d{76_in, 0_in, 0_deg},
+
+        // positive 2nd number = left, negative = right
+        {
+        frc::Translation2d{64_in, 0_in},
+        },         
+      frc::Pose2d{52_in, 0_in, 0_deg},
+      // Pass the config
+      config);
 
    frc::ProfiledPIDController<units::radians> thetaController{
       AutoConstants::kPThetaController, 0, 0,
@@ -326,15 +311,62 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
 
       {&m_drive});
 
+    frc2::SwerveControllerCommand<4> Blue2SwerveCommand1(
+      Blue2Trajectory1, [this]() { return m_drive.GetPose(); },
+
+      m_drive.kDriveKinematics,
+
+      frc::PIDController{AutoConstants::kPXController, 0, 0},
+      frc::PIDController{AutoConstants::kPYController, 0, 0}, thetaController,
+
+      [this](auto moduleStates) { m_drive.SetModuleStates(moduleStates); },
+
+      {&m_drive});
+    frc2::SwerveControllerCommand<4> Blue2SwerveCommand2(
+      Blue2Trajectory2, [this]() { return m_drive.GetPose(); },
+
+      m_drive.kDriveKinematics,
+
+      frc::PIDController{AutoConstants::kPXController, 0, 0},
+      frc::PIDController{AutoConstants::kPYController, 0, 0}, thetaController,
+
+      [this](auto moduleStates) { m_drive.SetModuleStates(moduleStates); },
+
+      {&m_drive});
+
+    frc2::SwerveControllerCommand<4> Blue2SwerveCommand3(
+      Blue2Trajectory3, [this]() { return m_drive.GetPose(); },
+
+      m_drive.kDriveKinematics,
+
+      frc::PIDController{AutoConstants::kPXController, 0, 0},
+      frc::PIDController{AutoConstants::kPYController, 0, 0}, thetaController,
+
+      [this](auto moduleStates) { m_drive.SetModuleStates(moduleStates); },
+
+      {&m_drive});
+    frc2::SwerveControllerCommand<4> Blue2SwerveCommand4(
+      Blue2Trajectory4, [this]() { return m_drive.GetPose(); },
+
+      m_drive.kDriveKinematics,
+
+      frc::PIDController{AutoConstants::kPXController, 0, 0},
+      frc::PIDController{AutoConstants::kPYController, 0, 0}, thetaController,
+
+      [this](auto moduleStates) { m_drive.SetModuleStates(moduleStates); },
+
+      {&m_drive});
   // Reset odometry to the starting pose of the trajectory.
   m_drive.ResetOdometry(exampleTrajectory.InitialPose());
 
+
+
+
+
   // no auto
-  return new frc2::SequentialCommandGroup(
-     // std::move(swerveControllerCommand),
-     // std::move(rotateControllerCommand),
-    // frc2::InstantCommand([this]() { m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false); },{}),
-      //frc2::RunCommand([this] { while(!m_arm.is_arm_up()){ m_arm.RunArm();} m_arm.Stop(); }, {&m_arm}),
+    
+  if (m_chooser.GetSelected() == "Red 1") {
+     return new frc2::SequentialCommandGroup(
       frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
       frc2::WaitCommand(0.75_s),
       frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
@@ -353,7 +385,226 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
       frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
       frc2::WaitCommand(0.5_s),
       frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
-      std::move(swerveControllerCommand)
-         
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake})
+    
+  ); 
+  }
+    else if (m_chooser.GetSelected() == "Red 2") {
+    return new frc2::SequentialCommandGroup(
+       frc2::FunctionalCommand(
+        // Reset gyro
+        [this] {
+            m_drive.SetPreviousDegrees();
+            m_drive.ZeroHeading();},
+        //Start rotating at start of command
+       // [this] {m_drive.Drive(.1_mps, 0_mps, -0.125_rad_per_s, false, false); },
+        [this] {m_drive.Drive(-.175_mps, 0_mps, 0.06_rad_per_s, false, false); },
+        //Stop rotating at end of command
+        [this] (bool interrupted) {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false); },
+        //End the comand when the robot's rotation exceeds 40 degrees
+        [this] {
+            //break out of turn if we're not getting any pigeon readings
+            //if(m_drive.GetDegrees() == m_drive.GetPreviousDegrees()){
+            m_drive.SetPreviousDegrees();
+            frc::SmartDashboard::PutNumber("previousdegrees", m_drive.GetPreviousDegrees());
+            frc::SmartDashboard::PutNumber("currentdegrees", m_drive.GetDegrees());
+            return abs(m_drive.GetDegrees()) >= 37;
+            // overshoots ~8 degrees 
+            
+            },
+        {&m_drive}
+        )
+  ); 
+  
+  }
+     else if (m_chooser.GetSelected() == "Red 3") {
+    return new frc2::SequentialCommandGroup(
+     // std::move(swerveControllerCommand),
+     // std::move(rotateControllerCommand),
+    // frc2::InstantCommand([this]() { m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false); },{}),
+      //frc2::RunCommand([this] { while(!m_arm.is_arm_up()){ m_arm.RunArm();} m_arm.Stop(); }, {&m_arm}),
+      //frc2::InstantCommand([this] {m_getridofbritishpeople.getridofbritishpeople(); } {&m_getridofbritishpeople}), //this is to get rid of british people
+      frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      std::move(swerveControllerCommand),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::WaitCommand(0.1_s),
+      frc2::InstantCommand([this] {m_intake.ReverseIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.1_s),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      std::move(backwardControllerCommand),
+      frc2::WaitCommand(1_s),
+      frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake})
+     // std::move(swerveControllerCommand) //not needed - 2 points for leaving but don't need to stay outside 
+  
+  ); 
+  }
+else if (m_chooser.GetSelected() == "Blue 1") {
+    return new frc2::SequentialCommandGroup(
+      frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      std::move(swerveControllerCommand),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::WaitCommand(0.1_s),
+      frc2::InstantCommand([this] {m_intake.ReverseIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.1_s),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      std::move(backwardControllerCommand),
+      frc2::WaitCommand(1_s),
+      frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake})
+  ); 
+  
+  }  
+  else if (m_chooser.GetSelected() == "Blue 2") {
+      m_drive.ResetOdometry(Blue2Trajectory1.InitialPose());
+      m_drive.ResetOdometry(Blue2Trajectory2.InitialPose());
+      m_drive.ResetOdometry(Blue2Trajectory3.InitialPose());          
+    return new frc2::SequentialCommandGroup(
+      frc2::InstantCommand([this] { 
+        m_drive.ZeroHeading();    
+      }, {&m_drive}),
+      frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+     // std::move(Blue2SwerveCommand1),
+      frc2::WaitCommand(0.2_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+        frc2::FunctionalCommand(
+        // Reset gyro
+        [this] {
+            m_drive.SetPreviousDegrees();
+            m_drive.ZeroHeading();},
+        //Start rotating at start of command
+       // [this] {m_drive.Drive(.1_mps, 0_mps, -0.125_rad_per_s, false, false); },
+        [this] {m_drive.Drive(.175_mps, 0_mps, -0.06_rad_per_s, false, false); },
+        //Stop rotating at end of command
+        [this] (bool interrupted) {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false); },
+        //End the comand when the robot's rotation exceeds 40 degrees
+        [this] {
+            //break out of turn if we're not getting any pigeon readings
+            //if(m_drive.GetDegrees() == m_drive.GetPreviousDegrees()){
+            m_drive.SetPreviousDegrees();
+            frc::SmartDashboard::PutNumber("previousdegrees", m_drive.GetPreviousDegrees());
+            frc::SmartDashboard::PutNumber("currentdegrees", m_drive.GetDegrees());
+            return abs(m_drive.GetDegrees()) >= 37;
+            // overshoots ~8 degrees 
+            
+            },
+        {&m_drive}
+        ),
+      //std::move(Blue2SwerveCommand2),
+      frc2::WaitCommand(0.2_s),
+      frc2::InstantCommand([this] {m_intake.ReverseIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.1_s),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+              frc2::FunctionalCommand(
+        // Reset gyro
+        [this] {
+            m_drive.SetPreviousDegrees();
+            m_drive.ZeroHeading();},
+        //Start rotating at start of command
+       // [this] {m_drive.Drive(.1_mps, 0_mps, -0.125_rad_per_s, false, false); },
+        [this] {m_drive.Drive(-0.125_mps, 0_mps, -0.15_rad_per_s, false, false); },
+        //Stop rotating at end of command
+        [this] (bool interrupted) {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false); },
+        //End the comand when the robot's rotation exceeds 40 degrees
+        [this] {
+            //break out of turn if we're not getting any pigeon readings
+            //if(m_drive.GetDegrees() == m_drive.GetPreviousDegrees()){
+            m_drive.SetPreviousDegrees();
+            frc::SmartDashboard::PutNumber("previousdegrees", m_drive.GetPreviousDegrees());
+            frc::SmartDashboard::PutNumber("currentdegrees", m_drive.GetDegrees());
+            return abs(m_drive.GetDegrees()) >= 80;
+            // overshoots ~8 degrees 
+            
+            },
+        {&m_drive}
+        ),
+        frc2::WaitCommand(0.1_s),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::InstantCommand([this] {m_drive.ZeroHeading();}, {&m_drive}),
+      frc2::InstantCommand([this] {m_drive.Drive(-0.1_mps, -0.06_mps, 0_rad_per_s, false, false);}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0.0_mps, 0_rad_per_s, false, false);}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.mrBloadintoshooter();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.2_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_arm.RunArm();}, {&m_arm}),
+      frc2::WaitCommand(0.66_s),
+      frc2::InstantCommand([this] {m_arm.Stop();}, {&m_arm}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.mrBloadintoshooter();}, {&m_shooter}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter})
+     /* std::move(backwardControllerCommand),
+      frc2::WaitCommand(1_s),
+      frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}) */
+  ); }
+    else if (m_chooser.GetSelected() == "Blue 3") {
+    return new frc2::SequentialCommandGroup(
+        frc2::FunctionalCommand(
+        // Reset gyro
+        [this] {
+            m_drive.SetPreviousDegrees();
+            m_drive.ZeroHeading();},
+        //Start rotating at start of command
+        [this] {m_drive.Drive(0_mps, 0_mps, -.5_rad_per_s, false, false); },
+        //Stop rotating at end of command
+        [this] (bool interrupted) {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false); },
+        //End the comand when the robot's rotation exceeds 40 degrees
+        [this] {
+            //break out of turn if we're not getting any pigeon readings
+            //if(m_drive.GetDegrees() == m_drive.GetPreviousDegrees()){
+            m_drive.SetPreviousDegrees();
+            frc::SmartDashboard::PutNumber("previousdegrees", m_drive.GetPreviousDegrees());
+            frc::SmartDashboard::PutNumber("currentdegrees", m_drive.GetDegrees());
+            return abs(m_drive.GetDegrees()) >= 172;
+            // overshoots ~8 degrees 
+            
+            },
+        {&m_drive}
+        )
+  ); 
+  
+  }  
+  else{
+    return new frc2::SequentialCommandGroup(
+
+     frc2::InstantCommand([this] { 
+frc::SmartDashboard::PutString("Auto Routine Selected", m_chooser.GetSelected());
+
+      }, {&m_drive})
+     
   );
+  }
+  
+    
 }

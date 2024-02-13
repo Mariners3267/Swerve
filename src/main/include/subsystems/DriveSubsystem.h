@@ -79,6 +79,10 @@ class DriveSubsystem : public frc2::SubsystemBase {
    * @return The turn rate of the robot, in degrees per second
    */
   double GetTurnRate();
+  double GetDegrees();
+  double GetPreviousDegrees();
+  double SetPreviousDegrees();
+
 
   /**
    * Returns the currently-estimated pose of the robot.
@@ -135,4 +139,5 @@ class DriveSubsystem : public frc2::SubsystemBase {
   // Odometry class for tracking robot pose
   // 4 defines the number of modules
   frc::SwerveDriveOdometry<4> m_odometry;
+  double previousDegrees;
 };

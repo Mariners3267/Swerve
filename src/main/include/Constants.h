@@ -26,7 +26,7 @@
 namespace DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    constexpr units::meters_per_second_t kMaxSpeed = 3.5_mps;
+    constexpr units::meters_per_second_t kMaxSpeed = 4.8_mps;
     //constexpr units::meters_per_second_t kMaxSpeed = 4.8_mps;
     constexpr units::radians_per_second_t kMaxAngularSpeed{2 * std::numbers::pi};
 
@@ -138,11 +138,11 @@ namespace ModuleConstants {
 Todo: ensure these values makes sense for our auto
 */
 namespace AutoConstants {
-    constexpr auto kMaxSpeed = 1_mps;
+    constexpr auto kMaxSpeed = 2_mps;
     constexpr auto kMaxAcceleration = 3_mps_sq;
     constexpr auto kMaxAngularSpeed = 3.142_rad_per_s;
     constexpr auto kMaxAngularAcceleration = 3.142_rad_per_s_sq;
-
+  //For acceleration at angles
     constexpr double kPXController = 0.5;
     constexpr double kPYController = 0.5;
     constexpr double kPThetaController = 0.5;
@@ -153,13 +153,15 @@ namespace AutoConstants {
 namespace OIConstants {
     constexpr int kDriverControllerPort = 0;
     constexpr int kCoDriverControllerPort = 1;
-    constexpr double kDriveDeadband = 0.10;
+    constexpr double kDriveDeadband = 0.15;
 }  // namespace OIConstants
 
 namespace IntakeConstants {
     constexpr int kConveyorCanId = 7;
+    //USED FOPR IDENBTIFYING CANS
     constexpr int kConveyorPWMPort = 2;                                                                                                                                                             
     constexpr double kIntakeSpeed = 0.7;
+    //like lightning mcqueen
     constexpr int kIntakeLimitSwitchDIOPort = 1;
     constexpr int kFeederCanID = 21;
     constexpr double kFeederSpeed = 0.25;

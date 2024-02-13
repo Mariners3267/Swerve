@@ -18,7 +18,7 @@ Todo: Will need to make methods that make sense for what the intake will do
 Arm::Arm() {
   // Implementation of subsystem constructor goes here.
   //frc::PWMSparkMax m_conveyorMotor(kconveyorMotorPort);
- // m_armMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kBrake);
+ m_armMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kBrake);
 }
 
 void Arm::RunArm() {
@@ -30,7 +30,12 @@ void Arm::RunArm() {
       m_armMotor.Set(0);
     }
     else {
+      if(m_ArmEncoder.GetPosition() < 15){
+             m_armMotor.Set(kArmSpeed * 3);
+      } 
+      else{
      m_armMotor.Set(kArmSpeed);
+      }
     } 
     
  // m_armMotor.Set(kArmSpeed);
@@ -57,6 +62,7 @@ bool Arm::is_arm_up() {
   return m_ampLimitSwitch.Get() ? false : true;
   
 }
+ 
 
 void Arm::Periodic() {
   // Implementation of subsystem periodic method goes here.
