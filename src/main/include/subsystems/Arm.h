@@ -29,6 +29,7 @@ class Arm : public frc2::SubsystemBase {
    * @return value of some boolean subsystem state, such as a digital sensor.
    */
   bool is_arm_up();
+  bool is_arm_down();
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
@@ -47,5 +48,6 @@ class Arm : public frc2::SubsystemBase {
   rev::SparkRelativeEncoder m_ArmEncoder = m_armMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor);
   //rev::CANSparkMax m_conveyorMotor(int deviceID, rev::CANSparkLowLevel::MotorType type);
   frc::DigitalInput m_ampLimitSwitch{ArmConstants::kArmDIOLimitPort};
+  frc::DigitalInput m_ampLimitSwitch2{ArmConstants::kArmDIOLimitPortDown};
   // Digital IO Classification
 };

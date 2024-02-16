@@ -162,7 +162,7 @@ namespace IntakeConstants {
     constexpr int kConveyorPWMPort = 2;                                                                                                                                                             
     constexpr double kIntakeSpeed = 0.7;
     //like lightning mcqueen
-    constexpr int kIntakeLimitSwitchDIOPort = 1;
+    constexpr int kIntakeLimitSwitchDIOPort = 4;
     constexpr int kFeederCanID = 21;
     constexpr double kFeederSpeed = 0.25;
     constexpr double kReverseFeederSpeed = -0.15;
@@ -171,8 +171,9 @@ namespace IntakeConstants {
 
 namespace ArmConstants {
  constexpr int kArmCanid = 18;
- constexpr double kArmSpeed = 0.125; 
+ constexpr double kArmSpeed = 0.125;  
  constexpr int kArmDIOLimitPort = 0;
+ constexpr int kArmDIOLimitPortDown = 1;
 }
 
 namespace LifterConstants {

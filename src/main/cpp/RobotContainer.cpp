@@ -470,8 +470,11 @@ else if (m_chooser.GetSelected() == "Blue 1") {
       frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
       frc2::WaitCommand(0.5_s),
       frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
-      std::move(swerveControllerCommand),
+      frc2::InstantCommand([this] {m_drive.Drive(.1_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
       frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::WaitCommand(1.5_s),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive})
+      /*
       frc2::WaitCommand(0.1_s),
       frc2::InstantCommand([this] {m_intake.ReverseIntake();}, {&m_intake}),
       frc2::WaitCommand(0.1_s),
@@ -483,7 +486,7 @@ else if (m_chooser.GetSelected() == "Blue 1") {
       frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
       frc2::WaitCommand(0.5_s),
       frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
-      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake})
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake})*/
   ); 
   
   }  

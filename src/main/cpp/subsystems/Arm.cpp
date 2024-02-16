@@ -48,7 +48,18 @@ void Arm::ReverseArm() {
   // Inline construction of command goes here.
   // Subsystem::RunOnce implicitly requires `this` subsystem.
   
-    m_armMotor.Set(-kArmSpeed);
+    if (is_arm_down()){
+      m_armMotor.Set(0);
+      m_ArmEncoder.SetPosition(0);
+    }
+    else {
+      if(m_ArmEncoder.GetPosition() > 12){
+             m_armMotor.Set(-kArmSpeed * 2.2);
+      } 
+      else{
+     m_armMotor.Set(-kArmSpeed);
+      }
+    } 
    // frc::SmartDashboard::PutNumber("Arm_Angle",m_ArmEncoder.GetPosition()); 
 }
 
@@ -60,6 +71,13 @@ bool Arm::is_arm_up() {
   // Query some boolean state, such as a digital sensor.
 
   return m_ampLimitSwitch.Get() ? false : true;
+  
+}
+
+bool Arm::is_arm_down() {
+  // Query some boolean state, such as a digital sensor.
+
+  return m_ampLimitSwitch2.Get() ? false : true;
   
 }
  
