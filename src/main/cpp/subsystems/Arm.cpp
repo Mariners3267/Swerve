@@ -58,6 +58,14 @@ bool Arm::is_arm_up() {
   
 }
 
+double Arm::GetArmVelocity(){
+  return m_ArmEncoder.GetVelocity()l
+}
+
+double Arm::GetArmPosition(){
+  return m_ArmEncoder.GetPosition();
+}
+
 void Arm::Periodic() {
   // Implementation of subsystem periodic method goes here.
   frc::SmartDashboard::PutNumber("Arm_Angle",m_ArmEncoder.GetPosition()); 

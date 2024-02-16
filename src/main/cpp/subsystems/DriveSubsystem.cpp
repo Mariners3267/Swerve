@@ -187,6 +187,10 @@ double DriveSubsystem::GetTurnRate() {
   
   }
 
+double DriveSubsystem::GetDegrees(){
+  return m_gyro.GetAngle();
+}
+
 frc::Pose2d DriveSubsystem::GetPose() { return m_odometry.GetPose(); }
 
 void DriveSubsystem::ResetOdometry(frc::Pose2d pose) {

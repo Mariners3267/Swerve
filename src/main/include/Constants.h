@@ -81,7 +81,6 @@ namespace DriveConstants {
 
 }  // namespace DriveConstants
 
-
 /*
 Todo: Update the module data based on actual build
 */
@@ -171,6 +170,13 @@ namespace ArmConstants {
  constexpr int kArmCanid = 18;
  constexpr double kArmSpeed = 0.125; 
  constexpr int kArmDIOLimitPort = 0;
+}
+
+namespace LifterConstants {
+  constexpr int kLeftLifterCanid = 22;
+  constexpr int kRightLifterCanid = 23;
+  constexpr double kLifterUpSpeed = -0.1; 
+
 }
 
 namespace ShooterConstants{

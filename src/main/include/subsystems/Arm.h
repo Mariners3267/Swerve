@@ -29,7 +29,8 @@ class Arm : public frc2::SubsystemBase {
    * @return value of some boolean subsystem state, such as a digital sensor.
    */
   bool is_arm_up();
-
+  double GetArmPosition();
+  double GetArmVelocity();
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
