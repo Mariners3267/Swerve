@@ -20,6 +20,7 @@
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"
 #include "subsystems/Arm.h"
+#include "subsystems/Lifter.h"
 #include <photon/PhotonCamera.h>
 #include "utils/AprilTagData.h"
 #include "subsystems/Shooter.h"
@@ -50,6 +51,7 @@ class RobotContainer {
   Arm m_arm; 
   AprilTagData aprilTag;
   Shooter m_shooter;
+  Lifter m_lifter;
   
   photon::PhotonCamera camera{"photonvision"};
 

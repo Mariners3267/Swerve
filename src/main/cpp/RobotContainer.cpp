@@ -77,10 +77,17 @@ RobotContainer::RobotContainer() {
                 m_driverController.GetLeftX(), OIConstants::kDriveDeadband)},
             -units::radians_per_second_t{frc::ApplyDeadband(
                 m_driverController.GetRightX(), OIConstants::kDriveDeadband)},
-            true, true);
+            false, true);
       },
       {&m_drive}));
+      m_lifter.SetDefaultCommand(frc2::RunCommand(
+       [this] {
+         m_lifter.RunLifters(m_driverController.GetLeftTriggerAxis(), m_driverController.GetRightTriggerAxis());
+       },
+      {&m_lifter}));
 }
+
+
 
 void RobotContainer::ConfigureButtonBindings() {
     frc2::JoystickButton(&m_driverController,
@@ -91,6 +98,15 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_driverController,
                        frc::XboxController::Button::kRightBumper)
       .WhileTrue(new frc2::RunCommand([this] { m_drive.SetX(); }, {&m_drive}));
+
+         frc2::JoystickButton(&m_driverController,
+                    frc::XboxController::Button::kBack)
+    .OnTrue(new frc2::RunCommand([this] { 
+        m_lifter.LiftersUp(); 
+    }, {&m_lifter}))
+    .OnFalse(new frc2::RunCommand([this] { 
+        m_lifter.Stop(); 
+    }, {&m_lifter}));
 
 
    

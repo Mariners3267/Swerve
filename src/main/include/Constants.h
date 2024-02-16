@@ -175,6 +175,13 @@ namespace ArmConstants {
  constexpr int kArmDIOLimitPort = 0;
 }
 
+namespace LifterConstants {
+  constexpr int kLeftLifterCanid = 22;
+  constexpr int kRightLifterCanid = 23;
+  constexpr double kLifterUpSpeed = -0.1; 
+
+}
+
 namespace ShooterConstants{
  constexpr int kShooterMotorOneCanId = 19; //18
  constexpr int kShooterMotorTwoCanId = 20; //19
