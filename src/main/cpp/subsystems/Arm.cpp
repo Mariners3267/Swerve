@@ -18,7 +18,7 @@ Todo: Will need to make methods that make sense for what the intake will do
 Arm::Arm() {
   // Implementation of subsystem constructor goes here.
   //frc::PWMSparkMax m_conveyorMotor(kconveyorMotorPort);
- // m_armMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kBrake);
+ m_armMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kBrake);
 }
 
 void Arm::RunArm() {
@@ -30,7 +30,12 @@ void Arm::RunArm() {
       m_armMotor.Set(0);
     }
     else {
+      if(m_ArmEncoder.GetPosition() < 15){
+             m_armMotor.Set(kArmSpeed * 3);
+      } 
+      else{
      m_armMotor.Set(kArmSpeed);
+      }
     } 
     
  // m_armMotor.Set(kArmSpeed);
@@ -43,7 +48,18 @@ void Arm::ReverseArm() {
   // Inline construction of command goes here.
   // Subsystem::RunOnce implicitly requires `this` subsystem.
   
-    m_armMotor.Set(-kArmSpeed);
+    if (is_arm_down()){
+      m_armMotor.Set(0);
+      m_ArmEncoder.SetPosition(0);
+    }
+    else {
+      if(m_ArmEncoder.GetPosition() > 12){
+             m_armMotor.Set(-kArmSpeed * 2.2);
+      } 
+      else{
+     m_armMotor.Set(-kArmSpeed);
+      }
+    } 
    // frc::SmartDashboard::PutNumber("Arm_Angle",m_ArmEncoder.GetPosition()); 
 }
 
@@ -57,6 +73,14 @@ bool Arm::is_arm_up() {
   return m_ampLimitSwitch.Get() ? false : true;
   
 }
+
+bool Arm::is_arm_down() {
+  // Query some boolean state, such as a digital sensor.
+
+  return m_ampLimitSwitch2.Get() ? false : true;
+  
+}
+ 
 
 void Arm::Periodic() {
   // Implementation of subsystem periodic method goes here.

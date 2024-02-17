@@ -71,12 +71,13 @@ bool Intake::isLoaded() {
   // Query some boolean state, such as a digital limit switch
   //The shooter will also be able to query this state of this limit switch 
   //If we are loaded, stop trying to load.
-  return m_loadedSensor.Get();
+  return !m_loadedSensor.Get();
   //return false;
 }
 
 void Intake::Periodic() {
   // Implementation of subsystem periodic method goes here.
+  frc::SmartDashboard::PutBoolean("Is Beam Broken",isLoaded()); 
 }
 
 void Intake::SimulationPeriodic() {

@@ -8,18 +8,17 @@
 #include <frc2/command/SubsystemBase.h>
 #include <rev/CANSparkMax.h>
 #include "Constants.h"
-#include <frc/DigitalInput.h>
 
-class Arm : public frc2::SubsystemBase {
+class Lifter : public frc2::SubsystemBase {
  public:
-  Arm();
+  Lifter();
 
   /**
    * Example command factory method.
    */
 
-  void RunArm();
-  void ReverseArm();
+  void RunLifters(double leftLifterSpeed, double rightLifterSpeed);
+  void LiftersUp();
   void Stop();
   
   /**
@@ -28,8 +27,9 @@ class Arm : public frc2::SubsystemBase {
    *
    * @return value of some boolean subsystem state, such as a digital sensor.
    */
-  bool is_arm_up();
-  bool is_arm_down();
+
+  double GetLeftLifterPosition();
+  double GetRightLifterPosition();
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
@@ -44,10 +44,9 @@ class Arm : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-  rev::CANSparkMax m_armMotor{ArmConstants::kArmCanid, rev::CANSparkLowLevel::MotorType::kBrushless};
-  rev::SparkRelativeEncoder m_ArmEncoder = m_armMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor);
-  //rev::CANSparkMax m_conveyorMotor(int deviceID, rev::CANSparkLowLevel::MotorType type);
-  frc::DigitalInput m_ampLimitSwitch{ArmConstants::kArmDIOLimitPort};
-  frc::DigitalInput m_ampLimitSwitch2{ArmConstants::kArmDIOLimitPortDown};
-  // Digital IO Classification
+  rev::CANSparkMax m_leftLifterMotor{LifterConstants::kLeftLifterCanid, rev::CANSparkLowLevel::MotorType::kBrushless};
+  rev::SparkRelativeEncoder m_leftLifterEncoder = m_leftLifterMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor);
+  rev::CANSparkMax m_rightLifterMotor{LifterConstants::kRightLifterCanid, rev::CANSparkLowLevel::MotorType::kBrushless};
+  rev::SparkRelativeEncoder m_rightLifterEncoder = m_rightLifterMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor);
+
 };
