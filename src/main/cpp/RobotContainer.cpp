@@ -113,8 +113,8 @@ void RobotContainer::ConfigureButtonBindings() {
 
     frc2::JoystickButton(&m_driverController,
                        frc::XboxController::Button::kLeftBumper)
-      .OnTrue(new frc2::RunCommand([this] { m_intake.Stop(); }, {&m_intake}));      
-    
+      .OnTrue(new frc2::InstantCommand([this] { m_camera.CameraToggle(); }, {&m_camera}));
+//GetLeftStickButtonPressed    
           
     frc2::JoystickButton(&m_driverController,
                     frc::XboxController::Button::kX)

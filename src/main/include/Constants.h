@@ -191,3 +191,9 @@ namespace ShooterConstants{
  constexpr double kintoShooterSpeed = 0.15; // mr b wanted me to do this
 
 }
+
+namespace CameraConstants{
+  constexpr int kCameraPWMPort = 0;
+  constexpr double kCameraUpPOS = 75;
+  constexpr double kCameraDownPOS = 0;
+}
