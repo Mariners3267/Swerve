@@ -195,7 +195,7 @@ namespace ShooterConstants{
 
 namespace CameraConstants{
   constexpr int kCameraPWMPort = 0;
-  constexpr double kCameraDownPOS = 0.3;
-  constexpr double kCameraUpPOS = 0;
+  constexpr double kCameraDownPOS = 0.4;
+  constexpr double kCameraUpPOS = 0.2;
   
 }
