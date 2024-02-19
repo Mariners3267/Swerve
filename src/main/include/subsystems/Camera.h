@@ -6,19 +6,18 @@
 
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/SubsystemBase.h>
-#include <rev/CANSparkMax.h>
 #include "Constants.h"
+#include "frc/Servo.h"
 
-class Lifter : public frc2::SubsystemBase {
+class Camera : public frc2::SubsystemBase {
  public:
-  Lifter();
+  Camera();
 
   /**
    * Example command factory method.
    */
 
-  void RunLifters(double leftLifterSpeed, double rightLifterSpeed);
-  void Stop();
+  void CameraToggle();
   
   /**
    * An example method querying a boolean state of the subsystem (for example, a
@@ -27,8 +26,6 @@ class Lifter : public frc2::SubsystemBase {
    * @return value of some boolean subsystem state, such as a digital sensor.
    */
 
-  double GetLeftLifterPosition();
-  double GetRightLifterPosition();
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
@@ -43,9 +40,6 @@ class Lifter : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-  rev::CANSparkMax m_leftLifterMotor{LifterConstants::kLeftLifterCanid, rev::CANSparkLowLevel::MotorType::kBrushless};
-  rev::SparkRelativeEncoder m_leftLifterEncoder = m_leftLifterMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor);
-  rev::CANSparkMax m_rightLifterMotor{LifterConstants::kRightLifterCanid, rev::CANSparkLowLevel::MotorType::kBrushless};
-  rev::SparkRelativeEncoder m_rightLifterEncoder = m_rightLifterMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor);
-
+  frc::Servo cameraServo{CameraConstants::kCameraPWMPort};
+  //rev::CANSparkMax m_conveyorMotor(int deviceID, rev::CANSparkLowLevel::MotorType type);
 };
