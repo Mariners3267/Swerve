@@ -59,10 +59,9 @@ class RobotContainer {
   // The chooser for the autonomous routines
   //frc::SendableChooser<frc2::Command*> m_chooser;
   frc::SendableChooser<std::string> m_chooser;
-  const std::string kAutoNameRed1 = "Red 1";
+  const std::string kAutoNameCenter = "Center";
   const std::string kAutoNameRed2 = "Red 2";
   const std::string kAutoNameRed3 = "Red 3";
-  const std::string kAutoNameBlue1 = "Blue 1";
   const std::string kAutoNameBlue2 = "Blue 2";
   const std::string kAutoNameBlue3 = "Blue 3";
   std::string m_autoSelected;

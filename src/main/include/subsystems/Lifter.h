@@ -18,7 +18,6 @@ class Lifter : public frc2::SubsystemBase {
    */
 
   void RunLifters(double leftLifterSpeed, double rightLifterSpeed);
-  void LiftersUp();
   void Stop();
   
   /**

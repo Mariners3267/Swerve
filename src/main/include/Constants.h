@@ -90,7 +90,7 @@ namespace ModuleConstants {
     // direction of the steering motor in the MAXSwerve Module.
     constexpr bool kTurningEncoderInverted = true;
 
-    // The MAXSwerve module can be configured with one of three pinion gears: 12T,
+    // The MAXSwerve module can be configured with one of three pinion gears: 12T, 
     // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
     // more teeth will result in a robot that drives faster).
     constexpr int kDrivingMotorPinionTeeth = 14;
@@ -140,7 +140,7 @@ Todo: ensure these values makes sense for our auto
 namespace AutoConstants {
     constexpr auto kMaxSpeed = 2_mps;
     constexpr auto kMaxAcceleration = 3_mps_sq;
-    constexpr auto kMaxAngularSpeed = 3.142_rad_per_s;
+    constexpr auto kMaxAngularSpeed = 3.142_rad_per_s; 
     constexpr auto kMaxAngularAcceleration = 3.142_rad_per_s_sq;
   //For acceleration at angles
     constexpr double kPXController = 0.5;
@@ -150,7 +150,7 @@ namespace AutoConstants {
     extern const frc::TrapezoidProfile<units::radians>::Constraints kThetaControllerConstraints;
 }  // namespace AutoConstants
 
-namespace OIConstants {
+namespace  OIConstants {
     constexpr int kDriverControllerPort = 0;
     constexpr int kCoDriverControllerPort = 1;
     constexpr double kDriveDeadband = 0.15;
@@ -165,7 +165,7 @@ namespace IntakeConstants {
     constexpr int kIntakeLimitSwitchDIOPort = 2;
     constexpr int kFeederCanID = 21;
     constexpr double kFeederSpeed = 0.25;
-    constexpr double kReverseFeederSpeed = -0.15;
+    constexpr  double kReverseFeederSpeed = -0.15;
   
 }
 
@@ -179,21 +179,23 @@ namespace ArmConstants {
 namespace LifterConstants {
   constexpr int kLeftLifterCanid = 22;
   constexpr int kRightLifterCanid = 23;
-  constexpr double kLifterUpSpeed = -0.1; 
+  constexpr double kLifterUpSpeed = 0; 
+  constexpr double kLifterDeadband = 0.2;
 
 }
 
 namespace ShooterConstants{
  constexpr int kShooterMotorOneCanId = 19; //18
  constexpr int kShooterMotorTwoCanId = 20; //19
- constexpr double kUpShooterSpeed = 0.7; // shooter speed percentage 0 to 1
+ constexpr  double kUpShooterSpeed = 0.7; // shooter speed percentage 0 to 1
  constexpr double kDownShooterSpeed = -0.15; // negative is backwards
- constexpr double kintoShooterSpeed = 0.15; // mr b wanted me to do this
+ constexpr double kintoShooterSpeed = 0.15; // mr beast wanted me to do this for THE FISH IS THE FATHER
 
 }
 
 namespace CameraConstants{
   constexpr int kCameraPWMPort = 0;
-  constexpr double kCameraUpPOS = 75;
-  constexpr double kCameraDownPOS = 0;
+  constexpr double kCameraDownPOS = 0.3;
+  constexpr double kCameraUpPOS = 0;
+  
 }

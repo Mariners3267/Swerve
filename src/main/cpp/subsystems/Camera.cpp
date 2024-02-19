@@ -23,15 +23,15 @@ Camera::Camera() {
 void Camera::CameraToggle() {
   // Inline construction of command goes here.
   // Subsystem::RunOnce implicitly requires `this` subsystem.
-   if(cameraServo.GetPosition()>kCameraDownPOS) {
-    cameraServo.SetAngle(kCameraDownPOS);
+   if(cameraServo.GetPosition()>=kCameraDownPOS) {
+    cameraServo.Set(kCameraUpPOS);
     
    } else {
-    cameraServo.SetAngle(kCameraUpPOS);
+    cameraServo.Set(kCameraDownPOS);
    }
 
  // m_armMotor.Set(kArmSpeed);
-  // frc::SmartDashboard::PutNumber("Arm_Angle",m_ArmEncoder.GetPosition()); 
+ 
    
   //RunOnce creates a command that calls a lambda once, and then finishes.
 }
@@ -39,7 +39,7 @@ void Camera::CameraToggle() {
 
 void Camera::Periodic() {
   // Implementation of subsystem periodic method goes here.
-
+  frc::SmartDashboard::PutNumber("Camera_Angle",cameraServo.GetPosition()); 
 }
 
 void Camera::SimulationPeriodic() {

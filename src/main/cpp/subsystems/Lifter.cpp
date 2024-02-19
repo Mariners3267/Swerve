@@ -19,21 +19,39 @@ Lifter::Lifter() {
   // Implementation of subsystem constructor goes here.
   //frc::PWMSparkMax m_conveyorMotor(kconveyorMotorPort);
  // m_armMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kBrake);
+ m_rightLifterMotor.SetInverted(true);
 }
 
 void Lifter::RunLifters(double leftLifterSpeed, double rightLifterSpeed) {
   // Inline construction of command goes here.
   // Subsystem::RunOnce implicitly requires `this` subsystem.
+
+if (leftLifterSpeed > 0.3){
+  leftLifterSpeed = 0.3;
+}
+else if (leftLifterSpeed < -0.3){
+  leftLifterSpeed = -0.3;
+}
+else {
+  leftLifterSpeed = 0;
+}
+
+if (rightLifterSpeed > 0.3){
+  rightLifterSpeed = 0.3;
+}
+else if (rightLifterSpeed < -0.3){
+  rightLifterSpeed = -0.3;
+}
+else {
+  rightLifterSpeed = 0;
+}
+
+
    m_leftLifterMotor.Set(leftLifterSpeed);
    m_rightLifterMotor.Set(rightLifterSpeed);
 }
 
-void Lifter::LiftersUp() {
-  // Inline construction of command goes here.
-  // Subsystem::RunOnce implicitly requires `this` subsystem.
-  m_leftLifterMotor.Set(kLifterUpSpeed);
-  m_rightLifterMotor.Set(kLifterUpSpeed);
-}
+\
 
 void Lifter::Stop(){
   m_leftLifterMotor.Set(0);
