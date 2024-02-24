@@ -20,9 +20,10 @@ class Intake : public frc2::SubsystemBase {
    * Example command factory method.
    */
   void RunIntake();
+  //To make the intake run away
   void ReverseIntake();
   void Stop();
-  
+  //To stop the intake from running away
   /**
    * An example method querying a boolean state of the subsystem (for example, a
    * digital sensor).

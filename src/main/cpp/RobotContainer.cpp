@@ -470,6 +470,52 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
   }
      else if (m_chooser.GetSelected() == "Red 3") {
     return new frc2::SequentialCommandGroup(
+      frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_drive.Drive(0.35_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(1.5_s),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::WaitCommand(0.1_s),
+      frc2::InstantCommand([this] {m_intake.ReverseIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.1_s),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::InstantCommand([this] {m_drive.Drive(-0.35_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(1.4_s),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(0.3_s),
+      frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0.3_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(0.52_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::InstantCommand([this] {m_drive.Drive(0.25_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(1.7_s),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(0.6_s),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::InstantCommand([this] {m_drive.Drive(-0.25_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(1.7_s),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::InstantCommand([this] {m_intake.ReverseIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.1_s),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, -0.3_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(0.6_s),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::InstantCommand([this] {m_shooter.ShootUp();}, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake})
       //frc2::InstantCommand([this] {m_getridofbritishpeople.getridofbritishpeople(); } {&m_getridofbritishpeople}), //this is to get rid of british people
 
   ); 
@@ -605,28 +651,55 @@ else if (m_chooser.GetSelected() == "Center") {
   ); }
     else if (m_chooser.GetSelected() == "Blue 3") {
     return new frc2::SequentialCommandGroup(
-        frc2::FunctionalCommand(
-        // Reset gyro
-        [this] {
-            m_drive.SetPreviousDegrees();
-            m_drive.ZeroHeading();},
-        //Start rotating at start of command
-        [this] {m_drive.Drive(0_mps, 0_mps, -.5_rad_per_s, false, false); },
-        //Stop rotating at end of command
-        [this] (bool interrupted) {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false); },
-        //End the comand when the robot's rotation exceeds 40 degrees
-        [this] {
-            //break out of turn if we're not getting any pigeon readings
-            //if(m_drive.GetDegrees() == m_drive.GetPreviousDegrees()){
-            m_drive.SetPreviousDegrees();
-            frc::SmartDashboard::PutNumber("previousdegrees", m_drive.GetPreviousDegrees());
-            frc::SmartDashboard::PutNumber("currentdegrees", m_drive.GetDegrees());
-            return abs(m_drive.GetDegrees()) >= 172;
-            // overshoots ~8 degrees 
-            
-            },
-        {&m_drive}
-        )
+  frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s), //this waits 9 seconds A
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s), //this waits 12 seconds
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_drive.Drive(0.35_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(1.5_s), // this waits 45 seconds
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::WaitCommand(0.1_s), //this waits 6 seconds
+      frc2::InstantCommand([this] {m_intake.ReverseIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.1_s), //this waits 0.1 seconds
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::InstantCommand([this] {m_drive.Drive(-0.35_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(1.25_s), //this waits 1.4 seconds
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(0.3_s), //this waits 0.3 seconds
+      frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s), //this waits 0.75 seconds
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s), //this waits 0.5 seconds
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, -0.3_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(0.52_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::InstantCommand([this] {m_drive.Drive(0.25_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(1.7_s),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(0.6_s),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::InstantCommand([this] {m_drive.Drive(-0.25_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(1.8_s),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::InstantCommand([this] {m_intake.ReverseIntake();}, {&m_intake}),
+      frc2::InstantCommand([this] {m_shooter.ShootDown();}, {&m_shooter}),
+      frc2::WaitCommand(0.2_s),
+      //A
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0.3_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(0.6_s),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::InstantCommand([this] {m_shooter.ShootUp();}, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake})
   ); 
   
   }  

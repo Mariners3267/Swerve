@@ -1,4 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
+// Copyright (c) FIRST and other WPILib contributors like me.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -10,7 +10,7 @@
 #include <rev/CANSparkMax.h>
 #include <rev/SparkPIDController.h>
 #include <rev/SparkRelativeEncoder.h>
-
+//A
 class MAXSwerveModule {
  public:
   /**

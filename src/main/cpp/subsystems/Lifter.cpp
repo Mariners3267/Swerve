@@ -7,7 +7,7 @@
 #include "Constants.h"
 
 using namespace LifterConstants;
-
+//A
 /*
 Todo: will need to update the type of motor used on the intake once it's known
 Todo: Will need to make methods that make sense for what the intake will do
@@ -35,7 +35,7 @@ else if (leftLifterSpeed < -0.3){
 else {
   leftLifterSpeed = 0;
 }
-
+//A
 if (rightLifterSpeed > 0.3){
   rightLifterSpeed = 0.3;
 }
@@ -66,4 +66,4 @@ void Lifter::Periodic() {
 
 void Lifter::SimulationPeriodic() {
   // Implementation of subsystem simulation periodic method goes here.
-}
+} //A

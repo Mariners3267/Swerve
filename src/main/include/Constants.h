@@ -80,7 +80,7 @@ namespace DriveConstants {
   const units::meter_t TARGET_HEIGHT = 5_ft;
 
 }  // namespace DriveConstants
-
+//A
 
 /*
 Todo: Update the module data based on actual build
@@ -103,7 +103,7 @@ namespace ModuleConstants {
     // teeth on the bevel pinion
     constexpr double kDrivingMotorReduction = (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
     constexpr double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumference.value()) /kDrivingMotorReduction;
-
+//A
     constexpr double kDrivingEncoderPositionFactor = (kWheelDiameter.value() * std::numbers::pi) /kDrivingMotorReduction;  // meters
     constexpr double kDrivingEncoderVelocityFactor = ((kWheelDiameter.value() * std::numbers::pi) / kDrivingMotorReduction) /60.0;  // meters per second
 
@@ -146,14 +146,14 @@ namespace AutoConstants {
     constexpr double kPXController = 0.5;
     constexpr double kPYController = 0.5;
     constexpr double kPThetaController = 0.5;
-
+//A
     extern const frc::TrapezoidProfile<units::radians>::Constraints kThetaControllerConstraints;
 }  // namespace AutoConstants
 
 namespace  OIConstants {
     constexpr int kDriverControllerPort = 0;
     constexpr int kCoDriverControllerPort = 1;
-    constexpr double kDriveDeadband = 0.15;
+    constexpr double kDriveDeadband = 0.07;
 }  // namespace OIConstants
 
 namespace IntakeConstants {
@@ -180,7 +180,8 @@ namespace LifterConstants {
   constexpr int kLeftLifterCanid = 22;
   constexpr int kRightLifterCanid = 23;
   constexpr double kLifterUpSpeed = 0; 
-  constexpr double kLifterDeadband = 0.2;
+  constexpr double kLifterDeadband = 0.1;
+  constexpr int kLiferSolenoid = 1;
 
 }
 
@@ -190,7 +191,6 @@ namespace ShooterConstants{
  constexpr  double kUpShooterSpeed = 0.7; // shooter speed percentage 0 to 1
  constexpr double kDownShooterSpeed = -0.15; // negative is backwards
  constexpr double kintoShooterSpeed = 0.15; // mr beast wanted me to do this for THE FISH IS THE FATHER
-
 }
 
 namespace CameraConstants{
