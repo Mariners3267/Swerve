@@ -60,6 +60,8 @@ RobotContainer::RobotContainer() {
   m_chooser.SetDefaultOption(kAutoNameCenter, kAutoNameCenter);
   m_chooser.AddOption(kAutoNameRed2, kAutoNameRed2);
   m_chooser.AddOption(kAutoNameRed3, kAutoNameRed3);
+  m_chooser.AddOption(kAutoNameRedLongRun, kAutoNameRedLongRun);
+  m_chooser.AddOption(kAutoNameBlueLongRun, kAutoNameBlueLongRun);
   m_chooser.AddOption(kAutoNameBlue2, kAutoNameBlue2);
   m_chooser.AddOption(kAutoNameBlue3, kAutoNameBlue3);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
@@ -376,7 +378,8 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
   // no auto
     
   
-   if (m_chooser.GetSelected() == "Red 2") {
+   if (m_chooser.GetSelected() == "Red Speaker Amp") {
+          frc::SmartDashboard::PutString("Auto Running", "Red Speaker Amp");
     return new frc2::SequentialCommandGroup(
     frc2::InstantCommand([this] { 
         m_drive.ZeroHeading();    
@@ -468,7 +471,8 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
   ); 
   
   }
-     else if (m_chooser.GetSelected() == "Red 3") {
+     else if (m_chooser.GetSelected() == "Blue 3 notes") {
+            frc::SmartDashboard::PutString("Auto Running", "Blue 3 notes");
     return new frc2::SequentialCommandGroup(
       frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
       frc2::WaitCommand(0.75_s),
@@ -494,7 +498,7 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
       frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
       frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
       frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0.3_rad_per_s, false, false);}, {&m_drive}),
-      frc2::WaitCommand(0.52_s),
+      frc2::WaitCommand(0.56_s),
       frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
       frc2::InstantCommand([this] {m_drive.Drive(0.25_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
       frc2::WaitCommand(1.7_s),
@@ -508,7 +512,7 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
       frc2::WaitCommand(0.1_s),
       frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
       frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, -0.3_rad_per_s, false, false);}, {&m_drive}),
-      frc2::WaitCommand(0.6_s),
+      frc2::WaitCommand(0.63_s),
       frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
       frc2::InstantCommand([this] {m_shooter.ShootUp();}, {&m_shooter}),
       frc2::WaitCommand(0.75_s),
@@ -520,7 +524,8 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
 
   ); 
   }
-else if (m_chooser.GetSelected() == "Center") {
+  else if (m_chooser.GetSelected() == "Blue Long Run") {
+        frc::SmartDashboard::PutString("Auto Running", "Blue Long Run");
     return new frc2::SequentialCommandGroup(
       frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
       frc2::WaitCommand(0.75_s),
@@ -548,10 +553,58 @@ else if (m_chooser.GetSelected() == "Center") {
   ); 
   
   }  
-  else if (m_chooser.GetSelected() == "Blue 2") {
+else if (m_chooser.GetSelected() == "Center") {
+        frc::SmartDashboard::PutString("Auto Running", "Center");
+    return new frc2::SequentialCommandGroup(
+      frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_drive.Drive(0.35_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(1.5_s),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::WaitCommand(0.1_s),
+      frc2::InstantCommand([this] {m_intake.ReverseIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.1_s),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::InstantCommand([this] {m_drive.Drive(-0.35_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(1.4_s),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(0.3_s),
+      frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake})
+  ); 
+  
+  }  
+  else if (m_chooser.GetSelected() == "Red Long Run") {
+        frc::SmartDashboard::PutString("Auto Running", "Red Long Run");
+    return new frc2::SequentialCommandGroup(
+      frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
+      frc2::WaitCommand(0.75_s),
+      frc2::InstantCommand([this] {m_intake.RunIntake();}, {&m_intake}),
+      frc2::WaitCommand(0.5_s),
+      frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
+      frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
+      frc2::InstantCommand([this] {m_drive.Drive(2_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(1_s),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0.1_rad_per_s, false, false);}, {&m_drive}),
+      frc2::WaitCommand(1_s),
+      frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive})
+
+  ); 
+  
+  }  
+  else if (m_chooser.GetSelected() == "Blue Speaker Amp") {
       m_drive.ResetOdometry(Blue2Trajectory1.InitialPose());
       m_drive.ResetOdometry(Blue2Trajectory2.InitialPose());
-      m_drive.ResetOdometry(Blue2Trajectory3.InitialPose());          
+      m_drive.ResetOdometry(Blue2Trajectory3.InitialPose());  
+            frc::SmartDashboard::PutString("Auto Running", "Blue Speaker Amp");       
     return new frc2::SequentialCommandGroup(
       frc2::InstantCommand([this] { 
         m_drive.ZeroHeading();    
@@ -619,7 +672,7 @@ else if (m_chooser.GetSelected() == "Center") {
         frc2::WaitCommand(0.1_s),
       frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
       frc2::InstantCommand([this] {m_drive.ZeroHeading();}, {&m_drive}),
-      frc2::InstantCommand([this] {m_drive.Drive(-0.1_mps, -0.06_mps, 0_rad_per_s, false, false);}),
+      frc2::InstantCommand([this] {m_drive.Drive(-0.1_mps, -0.08_mps, 0_rad_per_s, false, false);}),
       frc2::WaitCommand(0.5_s),
       frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0.0_mps, 0_rad_per_s, false, false);}),
       frc2::WaitCommand(0.5_s),
@@ -649,7 +702,8 @@ else if (m_chooser.GetSelected() == "Center") {
       frc2::InstantCommand([this] {m_shooter.Stop();}, {&m_shooter}),
       frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}) */
   ); }
-    else if (m_chooser.GetSelected() == "Blue 3") {
+    else if (m_chooser.GetSelected() == "Red 3 notes") {
+      frc::SmartDashboard::PutString("Auto Running", "Red 3 notes");
     return new frc2::SequentialCommandGroup(
   frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
       frc2::WaitCommand(0.75_s), //this waits 9 seconds A
@@ -665,7 +719,7 @@ else if (m_chooser.GetSelected() == "Center") {
       frc2::WaitCommand(0.1_s), //this waits 0.1 seconds
       frc2::InstantCommand([this] {m_intake.Stop();}, {&m_intake}),
       frc2::InstantCommand([this] {m_drive.Drive(-0.35_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
-      frc2::WaitCommand(1.25_s), //this waits 1.4 seconds
+      frc2::WaitCommand(1.4_s), //this waits 1.4 seconds
       frc2::InstantCommand([this] {m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false, false);}, {&m_drive}),
       frc2::WaitCommand(0.3_s), //this waits 0.3 seconds
       frc2::InstantCommand([this] { m_shooter.ShootUp(); }, {&m_shooter}),
@@ -707,6 +761,7 @@ else if (m_chooser.GetSelected() == "Center") {
     return new frc2::SequentialCommandGroup(
 
      frc2::InstantCommand([this] { 
+            frc::SmartDashboard::PutString("Auto Running", "Nope");
 frc::SmartDashboard::PutString("Auto Routine Selected", m_chooser.GetSelected());
 
       }, {&m_drive})

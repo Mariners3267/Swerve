@@ -26,21 +26,21 @@ void Lifter::RunLifters(double leftLifterSpeed, double rightLifterSpeed) {
   // Inline construction of command goes here.
   // Subsystem::RunOnce implicitly requires `this` subsystem.
 
-if (leftLifterSpeed > 0.3){
-  leftLifterSpeed = 0.3;
+if (leftLifterSpeed > 0.5){
+  leftLifterSpeed = 0.5;
 }
-else if (leftLifterSpeed < -0.3){
-  leftLifterSpeed = -0.3;
+else if (leftLifterSpeed < -0.5){
+  leftLifterSpeed = -0.5;
 }
 else {
   leftLifterSpeed = 0;
 }
 //A
-if (rightLifterSpeed > 0.3){
-  rightLifterSpeed = 0.3;
+if (rightLifterSpeed > 0.5){
+  rightLifterSpeed = 0.5;
 }
-else if (rightLifterSpeed < -0.3){
-  rightLifterSpeed = -0.3;
+else if (rightLifterSpeed < -0.5){
+  rightLifterSpeed = -0.5;
 }
 else {
   rightLifterSpeed = 0;
