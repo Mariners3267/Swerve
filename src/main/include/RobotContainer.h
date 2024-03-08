@@ -60,10 +60,12 @@ class RobotContainer {
   //frc::SendableChooser<frc2::Command*> m_chooser;
   frc::SendableChooser<std::string> m_chooser;
   const std::string kAutoNameCenter = "Center";
-  const std::string kAutoNameRed2 = "Red 2";
-  const std::string kAutoNameRed3 = "Red 3";
-  const std::string kAutoNameBlue2 = "Blue 2";
-  const std::string kAutoNameBlue3 = "Blue 3";
+  const std::string kAutoNameRed2 = "Red Speaker Amp";
+  const std::string kAutoNameRed3 = "Red 3 notes";
+  const std::string kAutoNameBlue2 = "Blue Speaker Amp";
+  const std::string kAutoNameBlue3 = "Blue 3 notes";
+  const std::string kAutoNameRedLongRun = "Red Long Run";
+  const std::string kAutoNameBlueLongRun = "Blue Long Run";
   std::string m_autoSelected;
 
   void ConfigureButtonBindings();
