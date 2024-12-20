@@ -15,7 +15,8 @@
 #include <frc2/command/SubsystemBase.h>
 
 #include "Constants.h"
-#include "MAXSwerveModule.h"
+//#include "MAXSwerveModule.h"
+#include "SDSMK4iSwerveModule.h"
 
 class DriveSubsystem : public frc2::SubsystemBase {
  public:
@@ -112,10 +113,16 @@ class DriveSubsystem : public frc2::SubsystemBase {
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 
-  MAXSwerveModule m_frontLeft;
+  /*MAXSwerveModule m_frontLeft;
   MAXSwerveModule m_rearLeft;
   MAXSwerveModule m_frontRight;
   MAXSwerveModule m_rearRight;
+  */
+    // Replace MAXSwerveModule with SDSMK4iSwerveModule
+  SDSMK4iSwerveModule m_frontLeft;
+  SDSMK4iSwerveModule m_frontRight;
+  SDSMK4iSwerveModule m_rearLeft;
+  SDSMK4iSwerveModule m_rearRight;
 
   // The gyro sensor
   //frc::ADIS16470_IMU m_gyro;
