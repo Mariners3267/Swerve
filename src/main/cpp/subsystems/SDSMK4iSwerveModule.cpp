@@ -6,7 +6,7 @@
 #include "Constants.h"
 
 using namespace ModuleConstants;
-
+ 
 SDSMK4iSwerveModule::SDSMK4iSwerveModule(const int drivingCANId, const int turningCANId, 
                                          const int absoluteEncoderChannel, 
                                          const double chassisAngularOffset)
