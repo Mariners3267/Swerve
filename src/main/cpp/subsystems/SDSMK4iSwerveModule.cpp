@@ -8,11 +8,11 @@
 using namespace ModuleConstants;
  
 SDSMK4iSwerveModule::SDSMK4iSwerveModule(const int drivingCANId, const int turningCANId, 
-                                         const int absoluteEncoderChannel, 
-                                         const double chassisAngularOffset)
+                                         const int absoluteEncoderCANId, 
+                                         const units::angle::radian_t chassisAngularOffset)
     : m_drivingSparkMax(drivingCANId, rev::CANSparkMax::MotorType::kBrushless),
       m_turningSparkMax(turningCANId, rev::CANSparkMax::MotorType::kBrushless),
-      m_turningAbsoluteEncoder(absoluteEncoderChannel) {
+      m_turningAbsoluteEncoder(absoluteEncoderCANId) {
   // Factory reset for both SPARK MAX controllers
   m_drivingSparkMax.RestoreFactoryDefaults();
   m_turningSparkMax.RestoreFactoryDefaults();
@@ -20,11 +20,6 @@ SDSMK4iSwerveModule::SDSMK4iSwerveModule(const int drivingCANId, const int turni
   // Configure driving encoder for SDS-specific units
   m_drivingEncoder.SetPositionConversionFactor(kDrivingEncoderPositionFactor);
   m_drivingEncoder.SetVelocityConversionFactor(kDrivingEncoderVelocityFactor);
-
-  // Configure absolute encoder for turning
-  m_turningAbsoluteEncoder.SetDistancePerRotation(kTurningEncoderPositionFactor);
-  m_turningAbsoluteEncoder.SetPositionOffset(0.0); // Adjust this based on calibration
-  m_turningAbsoluteEncoder.SetDistancePerRotation(std::numbers::pi * 2); // Full rotation in radians
 
   // Set up encoder inversion in software
   m_turningEncoderInverted = kTurningEncoderInverted;
@@ -57,30 +52,48 @@ SDSMK4iSwerveModule::SDSMK4iSwerveModule(const int drivingCANId, const int turni
   m_chassisAngularOffset = chassisAngularOffset;
 
   // Initialize desired state
-  m_desiredState.angle = frc::Rotation2d(units::radian_t{m_turningAbsoluteEncoder.GetDistance()});
-  m_drivingEncoder.SetPosition(0);
+  m_desiredState.angle = frc::Rotation2d(units::radian_t{m_turningAbsoluteEncoder.GetPosition().GetValue()});
+    m_drivingEncoder.SetPosition(0);
 }
 
-frc::SwerveModuleState SDSMK4iSwerveModule::GetState() const {
+frc::SwerveModuleState SDSMK4iSwerveModule::GetState(){
+  // Get the absolute position in turns
+  units::angle::turn_t rawPosition = m_turningAbsoluteEncoder.GetPosition().GetValue();
+  
   // Apply inversion if needed
-  double turningPosition = m_turningAbsoluteEncoder.GetDistance();
-  if (m_turningEncoderInverted) {
-    turningPosition = -turningPosition;
-  }
+  units::angle::turn_t adjustedPosition = m_turningEncoderInverted ? -rawPosition : rawPosition;
+
+  // Convert turns to radians
+  units::angle::radian_t angleInRadians = adjustedPosition * 2.0 * M_PI;
+
+  // Ensure m_chassisAngularOffset is in radians
+  units::angle::radian_t chassisOffsetInRadians = units::angle::radian_t{m_chassisAngularOffset};  // If m_chassisAngularOffset is already in radians, this is redundant but safe
+
+  // Apply the offset
+  angleInRadians = angleInRadians - chassisOffsetInRadians;
 
   return {units::meters_per_second_t{m_drivingEncoder.GetVelocity()},
-          units::radian_t{turningPosition - m_chassisAngularOffset}};
+          frc::Rotation2d(angleInRadians)};
 }
 
-frc::SwerveModulePosition SDSMK4iSwerveModule::GetPosition() const {
-  // Apply inversion if needed
-  double turningPosition = m_turningAbsoluteEncoder.GetDistance();
-  if (m_turningEncoderInverted) {
-    turningPosition = -turningPosition;
-  }
+frc::SwerveModulePosition SDSMK4iSwerveModule::GetPosition() {
+    // Get the absolute position in turns from the turning encoder
+    units::angle::turn_t rawPosition = m_turningAbsoluteEncoder.GetPosition().GetValue();
 
-  return {units::meter_t{m_drivingEncoder.GetPosition()},
-          units::radian_t{turningPosition - m_chassisAngularOffset}};
+    // Apply inversion if needed
+    units::angle::turn_t adjustedPosition = m_turningEncoderInverted ? -rawPosition : rawPosition;
+
+    // Convert turns to radians (turns × 2π = radians)
+    units::angle::radian_t angleInRadians = adjustedPosition * 2.0 * M_PI;
+
+    // Apply the chassis angular offset - ensure it's a radian_t
+    angleInRadians -= m_chassisAngularOffset; // Both should now be in radians
+
+    // Get the driving encoder position (assuming it returns meters)
+    units::meter_t distance = units::meter_t{m_drivingEncoder.GetPosition()};
+
+    // Return the swerve module position
+    return {distance, frc::Rotation2d(angleInRadians)};
 }
 
 void SDSMK4iSwerveModule::SetDesiredState(const frc::SwerveModuleState& desiredState) {
@@ -92,7 +105,7 @@ void SDSMK4iSwerveModule::SetDesiredState(const frc::SwerveModuleState& desiredS
 
   // Optimize the reference state to minimize rotation
   frc::SwerveModuleState optimizedDesiredState{frc::SwerveModuleState::Optimize(
-      correctedDesiredState, frc::Rotation2d(units::radian_t{m_turningAbsoluteEncoder.GetDistance()}))};
+      correctedDesiredState, frc::Rotation2d(units::radian_t{m_turningAbsoluteEncoder.GetPosition().GetValue()}))};
 
   // Command driving and turning motors
   m_drivingPIDController.SetReference((double)optimizedDesiredState.speed.value(),

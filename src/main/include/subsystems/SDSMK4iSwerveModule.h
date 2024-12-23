@@ -6,7 +6,10 @@
 #include <rev/CANSparkMax.h>
 #include <rev/SparkPIDController.h>
 #include <rev/SparkRelativeEncoder.h>
-#include <frc/DutyCycleEncoder.h> // For absolute encoder
+#include <frc/DutyCycleEncoder.h> // For pwm absolute encoder
+
+#include "ctre/phoenix6/CANcoder.hpp"
+#include "ctre/phoenix6/configs/Configs.hpp"
 
 class SDSMK4iSwerveModule {
  public:
@@ -15,22 +18,23 @@ class SDSMK4iSwerveModule {
    * motor, encoder, and PID controller. This configuration is specific to the
    * SDS MK4i Module built with NEOs, SPARKS MAX, and an Absolute Encoder.
    */
-  SDSMK4iSwerveModule(int driveCANId, int turningCANId, int absoluteEncoderChannel,
-                      double chassisAngularOffset);
+  
+  SDSMK4iSwerveModule(int driveCANId, int turningCANId, int absoluteEncoderCANId,
+                    units::angle::radian_t chassisAngularOffset);
 
   /**
    * Returns the current state of the module.
    *
    * @return The current state of the module.
    */
-  frc::SwerveModuleState GetState() const;
+  frc::SwerveModuleState GetState();
 
   /**
    * Returns the current position of the module.
    *
    * @return The current position of the module.
    */
-  frc::SwerveModulePosition GetPosition() const;
+  frc::SwerveModulePosition GetPosition();
 
   /**
    * Sets the desired state for the module.
@@ -51,14 +55,14 @@ class SDSMK4iSwerveModule {
   rev::SparkRelativeEncoder m_drivingEncoder =
       m_drivingSparkMax.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor);
 
-  frc::DutyCycleEncoder m_turningAbsoluteEncoder;
+  ctre::phoenix6::hardware::CANcoder m_turningAbsoluteEncoder;
 
   rev::SparkPIDController m_drivingPIDController =
       m_drivingSparkMax.GetPIDController();
   rev::SparkPIDController m_turningPIDController =
       m_turningSparkMax.GetPIDController();
 
-  double m_chassisAngularOffset = 0;
+  units::angle::radian_t m_chassisAngularOffset{0.0};
   frc::SwerveModuleState m_desiredState{units::meters_per_second_t{0.0},
                                         frc::Rotation2d()};
   bool m_turningEncoderInverted = false;
