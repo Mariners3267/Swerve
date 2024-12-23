@@ -16,13 +16,13 @@
 using namespace DriveConstants;
 
 DriveSubsystem::DriveSubsystem()
-    : m_frontLeft{kFrontLeftDrivingCanId, kFrontLeftTurningCanId, kFrontLeftEncoderChannel,
+    : m_frontLeft{kFrontLeftDrivingCanId, kFrontLeftTurningCanId, kFrontLeftCanCoderCanId,
                   units::angle::radian_t{kFrontLeftChassisAngularOffset}},
-      m_rearLeft{kRearLeftDrivingCanId, kRearLeftTurningCanId, kRearLeftEncoderChannel, 
+      m_rearLeft{kRearLeftDrivingCanId, kRearLeftTurningCanId, kRearLeftCanCoderCanId, 
                  units::angle::radian_t{kRearLeftChassisAngularOffset}},
-      m_frontRight{kFrontRightDrivingCanId, kFrontRightTurningCanId, kFrontRightEncoderChannel,
+      m_frontRight{kFrontRightDrivingCanId, kFrontRightTurningCanId, kFrontRightCanCoderCanId,
                    units::angle::radian_t{kFrontRightChassisAngularOffset}},
-      m_rearRight{kRearRightDrivingCanId, kRearRightTurningCanId, kRearRightEncoderChannel,
+      m_rearRight{kRearRightDrivingCanId, kRearRightTurningCanId, kRearRightCanCoderCanId,
                   units::angle::radian_t{kRearRightChassisAngularOffset}},
       m_odometry{kDriveKinematics,
                  //frc::Rotation2d(units::radian_t{m_gyro.GetAngle()}),
